@@ -13,8 +13,12 @@
 				<defo><![CDATA['yes']]></defo>
 				<enumeration><![CDATA['yes','no']]></enumeration>
 			</column>
-			<column name="created_at" type="DATETIME" jt="93" mandatory="y" />
-			<column name="modified_at" type="DATETIME" jt="93" mandatory="y" />
+			<column name="created_at" type="DATETIME" jt="93" mandatory="y" >
+				<defo><![CDATA[current_timestamp()]]></defo>
+			</column>
+			<column name="modified_at" type="DATETIME" jt="93" mandatory="y" >
+				<defo><![CDATA[current_timestamp()]]></defo>
+			</column>
 			<index name="pk_categories" unique="PRIMARY_KEY" >
 				<column name="category_id" />
 			</index>
@@ -49,8 +53,12 @@
 				<defo><![CDATA['yes']]></defo>
 				<enumeration><![CDATA['yes','no']]></enumeration>
 			</column>
-			<column name="created_at" type="DATETIME" jt="93" mandatory="y" />
-			<column name="modified_at" type="DATETIME" jt="93" mandatory="y" />
+			<column name="created_at" type="DATETIME" jt="93" mandatory="y" >
+				<defo><![CDATA[current_timestamp()]]></defo>
+			</column>
+			<column name="modified_at" type="DATETIME" jt="93" mandatory="y" >
+				<defo><![CDATA[current_timestamp()]]></defo>
+			</column>
 			<index name="pk_customer_addresses" unique="PRIMARY_KEY" >
 				<column name="customer_address_id" />
 			</index>
@@ -63,7 +71,7 @@
 			<options><![CDATA[ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci]]></options>
 		</table>
 		<table name="customer_reviews" spec="" >
-			<column name="customer_review_id" type="INT" length="10" jt="4" mandatory="y" unsigned="y" >
+			<column name="customer_review_id" type="INT" length="11" jt="4" mandatory="y" >
 				<identity><![CDATA[AUTO_INCREMENT]]></identity>
 			</column>
 			<column name="customer_id" type="INT" jt="4" mandatory="y" />
@@ -125,8 +133,12 @@
 				<defo><![CDATA['yes']]></defo>
 				<enumeration><![CDATA['yes','no']]></enumeration>
 			</column>
-			<column name="modified_at" type="DATETIME" jt="93" mandatory="y" />
-			<column name="created_at" type="DATETIME" jt="93" mandatory="y" />
+			<column name="modified_at" type="DATETIME" jt="93" mandatory="y" >
+				<defo><![CDATA[current_timestamp()]]></defo>
+			</column>
+			<column name="created_at" type="DATETIME" jt="93" mandatory="y" >
+				<defo><![CDATA[current_timestamp()]]></defo>
+			</column>
 			<index name="pk_customers" unique="PRIMARY_KEY" >
 				<column name="customer_id" />
 			</index>
@@ -162,8 +174,12 @@
 				<defo><![CDATA['yes']]></defo>
 				<enumeration><![CDATA['yes','no']]></enumeration>
 			</column>
-			<column name="created_at" type="DATETIME" jt="93" mandatory="y" />
-			<column name="modified_at" type="DATETIME" jt="93" mandatory="y" />
+			<column name="created_at" type="DATETIME" jt="93" mandatory="y" >
+				<defo><![CDATA[current_timestamp()]]></defo>
+			</column>
+			<column name="modified_at" type="DATETIME" jt="93" mandatory="y" >
+				<defo><![CDATA[current_timestamp()]]></defo>
+			</column>
 			<index name="pk_medias" unique="PRIMARY_KEY" >
 				<column name="media_id" />
 			</index>
@@ -186,8 +202,12 @@
 				<defo><![CDATA['yes']]></defo>
 				<enumeration><![CDATA['yes','no']]></enumeration>
 			</column>
-			<column name="created_at" type="DATETIME" jt="93" mandatory="y" />
-			<column name="modified_at" type="DATETIME" jt="93" mandatory="y" />
+			<column name="created_at" type="DATETIME" jt="93" mandatory="y" >
+				<defo><![CDATA[current_timestamp()]]></defo>
+			</column>
+			<column name="modified_at" type="DATETIME" jt="93" mandatory="y" >
+				<defo><![CDATA[current_timestamp()]]></defo>
+			</column>
 			<index name="pk_order_history" unique="PRIMARY_KEY" >
 				<column name="order_history_id" />
 			</index>
@@ -218,8 +238,12 @@
 				<defo><![CDATA['yes']]></defo>
 				<enumeration><![CDATA['yes','no']]></enumeration>
 			</column>
-			<column name="created_at" type="DATETIME" jt="93" mandatory="y" />
-			<column name="modified_at" type="DATETIME" jt="93" mandatory="y" />
+			<column name="created_at" type="DATETIME" jt="93" mandatory="y" >
+				<defo><![CDATA[current_timestamp()]]></defo>
+			</column>
+			<column name="modified_at" type="DATETIME" jt="93" mandatory="y" >
+				<defo><![CDATA[current_timestamp()]]></defo>
+			</column>
 			<index name="pk_order_invoices" unique="PRIMARY_KEY" >
 				<column name="order_invoice_id" />
 			</index>
@@ -258,8 +282,12 @@
 				<defo><![CDATA['yes']]></defo>
 				<enumeration><![CDATA['yes','no']]></enumeration>
 			</column>
-			<column name="created_at" type="DATETIME" jt="93" mandatory="y" />
-			<column name="modified_at" type="DATETIME" jt="93" mandatory="y" />
+			<column name="created_at" type="DATETIME" jt="93" mandatory="y" >
+				<defo><![CDATA[current_timestamp()]]></defo>
+			</column>
+			<column name="modified_at" type="DATETIME" jt="93" mandatory="y" >
+				<defo><![CDATA[current_timestamp()]]></defo>
+			</column>
 			<index name="pk_order_items_0" unique="PRIMARY_KEY" >
 				<column name="order_ticket_id" />
 			</index>
@@ -301,8 +329,12 @@
 				<defo><![CDATA['yes']]></defo>
 				<enumeration><![CDATA['yes','no']]></enumeration>
 			</column>
-			<column name="created_at" type="DATETIME" jt="93" mandatory="y" />
-			<column name="modified_at" type="DATETIME" jt="93" mandatory="y" />
+			<column name="created_at" type="DATETIME" jt="93" mandatory="y" >
+				<defo><![CDATA[current_timestamp()]]></defo>
+			</column>
+			<column name="modified_at" type="DATETIME" jt="93" mandatory="y" >
+				<defo><![CDATA[current_timestamp()]]></defo>
+			</column>
 			<index name="pk_order_items" unique="PRIMARY_KEY" >
 				<column name="order_ticket_id" />
 			</index>
@@ -347,8 +379,12 @@
 				<defo><![CDATA['yes']]></defo>
 				<enumeration><![CDATA['yes','no']]></enumeration>
 			</column>
-			<column name="created_at" type="DATETIME" jt="93" mandatory="y" />
-			<column name="modified_at" type="DATETIME" jt="93" mandatory="y" />
+			<column name="created_at" type="DATETIME" jt="93" mandatory="y" >
+				<defo><![CDATA[current_timestamp()]]></defo>
+			</column>
+			<column name="modified_at" type="DATETIME" jt="93" mandatory="y" >
+				<defo><![CDATA[current_timestamp()]]></defo>
+			</column>
 			<index name="pk_orders" unique="PRIMARY_KEY" >
 				<column name="order_id" />
 			</index>
@@ -396,8 +432,12 @@
 				<defo><![CDATA['yes']]></defo>
 				<enumeration><![CDATA['yes','no']]></enumeration>
 			</column>
-			<column name="created_at" type="DATETIME" jt="93" mandatory="y" />
-			<column name="modified_at" type="DATETIME" jt="93" mandatory="y" />
+			<column name="created_at" type="DATETIME" jt="93" mandatory="y" >
+				<defo><![CDATA[current_timestamp()]]></defo>
+			</column>
+			<column name="modified_at" type="DATETIME" jt="93" mandatory="y" >
+				<defo><![CDATA[current_timestamp()]]></defo>
+			</column>
 			<index name="pk_payment_history" unique="PRIMARY_KEY" >
 				<column name="payment_event_id" />
 			</index>
@@ -427,8 +467,12 @@
 				<defo><![CDATA['yes']]></defo>
 				<enumeration><![CDATA['yes','no']]></enumeration>
 			</column>
-			<column name="created_at" type="DATETIME" jt="93" mandatory="y" />
-			<column name="modified_at" type="DATETIME" jt="93" mandatory="y" />
+			<column name="created_at" type="DATETIME" jt="93" mandatory="y" >
+				<defo><![CDATA[current_timestamp()]]></defo>
+			</column>
+			<column name="modified_at" type="DATETIME" jt="93" mandatory="y" >
+				<defo><![CDATA[current_timestamp()]]></defo>
+			</column>
 			<index name="pk_payment_methods" unique="PRIMARY_KEY" >
 				<column name="payment_method_id" />
 			</index>
@@ -452,13 +496,20 @@
 				<defo><![CDATA['yes']]></defo>
 				<enumeration><![CDATA['yes','no']]></enumeration>
 			</column>
-			<column name="created_at" type="DATETIME" jt="93" mandatory="y" />
-			<column name="modified_at" type="DATETIME" jt="93" mandatory="y" />
+			<column name="created_at" type="DATETIME" jt="93" mandatory="y" >
+				<defo><![CDATA[current_timestamp()]]></defo>
+			</column>
+			<column name="modified_at" type="DATETIME" jt="93" mandatory="y" >
+				<defo><![CDATA[current_timestamp()]]></defo>
+			</column>
 			<index name="pk_card_transactions" unique="PRIMARY_KEY" >
 				<column name="payment_transaction_id" />
 			</index>
 			<index name="order_id" unique="NORMAL" >
 				<column name="order_id" />
+			</index>
+			<index name="fk_payment_transactions" unique="NORMAL" >
+				<column name="order_invoice_id" />
 			</index>
 			<fk name="card_transactions_ibfk_1" to_schema="kurama" to_table="orders" options="" >
 				<fk_column name="order_id" pk="order_id" />
@@ -488,8 +539,12 @@
 				<defo><![CDATA['yes']]></defo>
 				<enumeration><![CDATA['yes','no']]></enumeration>
 			</column>
-			<column name="created_at" type="DATETIME" jt="93" mandatory="y" />
-			<column name="modified_at" type="DATETIME" jt="93" mandatory="y" />
+			<column name="created_at" type="DATETIME" jt="93" mandatory="y" >
+				<defo><![CDATA[current_timestamp()]]></defo>
+			</column>
+			<column name="modified_at" type="DATETIME" jt="93" mandatory="y" >
+				<defo><![CDATA[current_timestamp()]]></defo>
+			</column>
 			<index name="pk_subproducts" unique="PRIMARY_KEY" >
 				<column name="product_item_id" />
 			</index>
@@ -521,8 +576,12 @@
 				<defo><![CDATA['yes']]></defo>
 				<enumeration><![CDATA['yes','no']]></enumeration>
 			</column>
-			<column name="created_at" type="DATETIME" jt="93" mandatory="y" />
-			<column name="modified_at" type="DATETIME" jt="93" mandatory="y" />
+			<column name="created_at" type="DATETIME" jt="93" mandatory="y" >
+				<defo><![CDATA[current_timestamp()]]></defo>
+			</column>
+			<column name="modified_at" type="DATETIME" jt="93" mandatory="y" >
+				<defo><![CDATA[current_timestamp()]]></defo>
+			</column>
 			<index name="pk_products" unique="PRIMARY_KEY" >
 				<column name="product_id" />
 			</index>
@@ -551,8 +610,12 @@
 				<defo><![CDATA['yes']]></defo>
 				<enumeration><![CDATA['yes','no']]></enumeration>
 			</column>
-			<column name="created_at" type="DATETIME" jt="93" mandatory="y" />
-			<column name="modified_at" type="DATETIME" jt="93" mandatory="y" />
+			<column name="created_at" type="DATETIME" jt="93" mandatory="y" >
+				<defo><![CDATA[current_timestamp()]]></defo>
+			</column>
+			<column name="modified_at" type="DATETIME" jt="93" mandatory="y" >
+				<defo><![CDATA[current_timestamp()]]></defo>
+			</column>
 			<index name="pk_brands" unique="PRIMARY_KEY" >
 				<column name="trip_id" />
 			</index>
@@ -605,8 +668,12 @@
 				<defo><![CDATA['yes']]></defo>
 				<enumeration><![CDATA['yes','no']]></enumeration>
 			</column>
-			<column name="created_at" type="DATETIME" jt="93" mandatory="y" />
-			<column name="modified_at" type="DATETIME" jt="93" mandatory="y" />
+			<column name="created_at" type="DATETIME" jt="93" mandatory="y" >
+				<defo><![CDATA[current_timestamp()]]></defo>
+			</column>
+			<column name="modified_at" type="DATETIME" jt="93" mandatory="y" >
+				<defo><![CDATA[current_timestamp()]]></defo>
+			</column>
 			<index name="pk_vouchers" unique="PRIMARY_KEY" >
 				<column name="voucher_id" />
 			</index>
@@ -623,6 +690,7 @@
 		</table>
 	</schema>
 	<layout name="Main Diagram" id="Diagram-720" show_relation="columns" >
+		<comment><![CDATA[ER Diagram]]></comment>
 		<entity schema="kurama" name="categories" color="BED3F4" x="289" y="1173" />
 		<entity schema="kurama" name="customer_addresses" color="C7F4BE" x="697" y="102" />
 		<entity schema="kurama" name="customer_reviews" color="C7F4BE" x="697" y="459" />
@@ -660,9 +728,9 @@
 			<entity schema="kurama" name="order_items" />
 			<entity schema="kurama" name="order_invoices" />
 			<entity schema="kurama" name="order_tickets" />
-			<entity schema="kurama" name="orders" />
 			<entity schema="kurama" name="payment_events" />
 			<entity schema="kurama" name="payment_transactions" />
+			<entity schema="kurama" name="orders" />
 		</group>
 		<group name="API Control &amp; Admin Area" color="800080" >
 			<entity schema="kurama" name="users" />
@@ -916,8 +984,7 @@ ALTER TABLE products ADD CONSTRAINT products_ibfk_1 FOREIGN KEY ( brand_id ) REF
 
 ALTER TABLE subproducts ADD CONSTRAINT subproducts_ibfk_1 FOREIGN KEY ( product_id ) REFERENCES products( product_id ) ON DELETE CASCADE ON UPDATE NO ACTION;
 
-ALTER TABLE vouchers ADD CONSTRAINT vouchers_ibfk_1 FOREIGN KEY ( customer_id ) REFERENCES customers( customer_id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
-]]></string>
+ALTER TABLE vouchers ADD CONSTRAINT vouchers_ibfk_1 FOREIGN KEY ( customer_id ) REFERENCES customers( customer_id ) ON DELETE NO ACTION ON UPDATE NO ACTION;]]></string>
 		</script>
 		<script name="SQL_Editor_001" id="Editor-243a" language="SQL" >
 			<string><![CDATA[CREATE SCHEMA kurama;
@@ -1168,8 +1235,7 @@ ALTER TABLE products ADD CONSTRAINT products_ibfk_1 FOREIGN KEY ( brand_id ) REF
 
 ALTER TABLE subproducts ADD CONSTRAINT subproducts_ibfk_1 FOREIGN KEY ( product_id ) REFERENCES products( product_id ) ON DELETE CASCADE ON UPDATE NO ACTION;
 
-ALTER TABLE vouchers ADD CONSTRAINT vouchers_ibfk_1 FOREIGN KEY ( customer_id ) REFERENCES customers( customer_id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
-]]></string>
+ALTER TABLE vouchers ADD CONSTRAINT vouchers_ibfk_1 FOREIGN KEY ( customer_id ) REFERENCES customers( customer_id ) ON DELETE NO ACTION ON UPDATE NO ACTION;]]></string>
 		</script>
 		<script name="SQL_Editor_002" id="Editor-21c6" language="SQL" >
 			<string><![CDATA[CREATE SCHEMA kurama;
@@ -1412,8 +1478,7 @@ ALTER TABLE product_items ADD CONSTRAINT subproducts_ibfk_1 FOREIGN KEY ( produc
 
 ALTER TABLE products ADD CONSTRAINT products_ibfk_1 FOREIGN KEY ( brand_id ) REFERENCES brands( brand_id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
-ALTER TABLE vouchers ADD CONSTRAINT vouchers_ibfk_1 FOREIGN KEY ( customer_id ) REFERENCES customers( customer_id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
-]]></string>
+ALTER TABLE vouchers ADD CONSTRAINT vouchers_ibfk_1 FOREIGN KEY ( customer_id ) REFERENCES customers( customer_id ) ON DELETE NO ACTION ON UPDATE NO ACTION;]]></string>
 		</script>
 	</layout>
 	<layout name="~Diagram with Sample Tools" id="Diagram-262e" show_column_type="y" show_relation="columns" >

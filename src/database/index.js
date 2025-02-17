@@ -1,12 +1,9 @@
 import { Sequelize } from "sequelize";
 
 import config from "../config/database";
-import Customer from "../app/models/Customer";
-import Contact from "../app/models/Contact";
 import User from "../app/models/User";
-import File from "../app/models/File";
 
-const models = [Customer, Contact, User, File];
+const models = [User];
 const env = process.env.NODE_ENV || "development";
 const sequelizeConfig = config[env];
 

@@ -37,9 +37,7 @@ class User extends Model {
     return bcrypt.compare(password, this.password_hash);
   }
 
-  static associate(models) {
-    this.belongsTo(models.File, { foreignKey: "fileId", as: "photo" });
-  }
+  static associate() {}
 }
 
 export default User;
