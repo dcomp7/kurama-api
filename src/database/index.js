@@ -2,8 +2,10 @@ import { Sequelize } from "sequelize";
 
 import config from "../config/database";
 import User from "../app/models/User";
+import Customer from "../app/models/Customer";
+import CustomerAddress from "../app/models/CustomerAddress";
 
-const models = [User];
+const models = [User, Customer, CustomerAddress];
 const sequelizeConfig = config;
 
 class Database {
