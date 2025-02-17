@@ -1,28 +1,26 @@
 version: '3.8'
 
 services:
-  postgres:
-    image: postgres:12.2
-    container_name: postgres
+  mariadb:
+    image: mariadb:10.6
+    container_name: mariadb
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 'secret'
-      POSTGRES_DB: 'mydb'
+      MYSQL_ROOT_PASSWORD: 'secret'
+      MYSQL_DATABASE: 'mydb'
+      MYSQL_USER: 'user'
+      MYSQL_PASSWORD: 'password'
     ports:
-      - "5432:5432"
+      - "3306:3306"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - mariadb_data:/var/lib/mysql
 
-  pgadmin:
-    image: dpage/pgadmin4:latest
-    container_name: pgadmin
-    environment:
-      PGADMIN_DEFAULT_EMAIL: admin@example.com
-      PGADMIN_DEFAULT_PASSWORD: admin
+  adminer:
+    image: adminer:latest
+    container_name: adminer
     ports:
-      - "5050:80"
+      - "8080:8080"
     depends_on:
-      - postgres
+      - mariadb
 
   redis:
     image: redis:latest
@@ -31,4 +29,4 @@ services:
       - "6379:6379"
 
 volumes:
-  postgres_data:
+  mariadb_data:
