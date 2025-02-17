@@ -12,14 +12,14 @@ const router = express.Router();
 
 router.post("/sessions", session.create);
 
+// Authenticated routes
+router.use(authMiddleware);
+
 router.get("/users", user.index);
 router.get("/users/:id", user.show);
 router.post("/users", user.create);
 router.put("/users/:id", user.update);
 router.delete("/users/:id", user.delete);
-
-// Authenticated routes
-router.use(authMiddleware);
 /*
 router.get("/customers", customer.index);
 router.get("/customers/:id", customer.show);

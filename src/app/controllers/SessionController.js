@@ -8,15 +8,24 @@ class SessionController {
     const schema = Yup.object().shape({
       email: Yup.string().email().required(),
       password: Yup.string().required(),
+      type: Yup.string().oneOf(["user", "customer"]).default("user"),
     });
 
     if (!(await schema.isValid(req.body))) {
       return res.status(400).json({ error: "Validation fails" });
     }
 
-    const { email, password } = req.body;
+    if (!req.body.type) {
+      req.body.type = "user";
+    }
 
-    const user = await User.findOne({ where: { email } });
+    const { type, email, password } = req.body;
+
+    let user;
+
+    if (type === "user") {
+      user = await User.findOne({ where: { email } });
+    }
 
     if (!user) {
       return res.status(401).json({ error: "User not found" });
@@ -26,15 +35,19 @@ class SessionController {
       return res.status(401).json({ error: "Password does not match" });
     }
 
-    const { id, name } = user;
+    const output = {
+      type: type,
+      userId: type === "user" ? user.user_id : null,
+      customerId: type === "customer" ? user.customer_id : null,
+    };
 
     return res.json({
-      user: {
-        id,
-        name,
-        email,
+      data: {
+        ...output,
+        name: user.name,
+        email: user.email,
       },
-      token: jwt.sign({ id }, authConfig.secret, {
+      token: jwt.sign(output, authConfig.secret, {
         expiresIn: authConfig.expiresIn,
       }),
     });

@@ -12,10 +12,18 @@ export default async (req, res, next) => {
   const [, token] = authHeader.split(" ");
   try {
     const decoded = await promisify(jwt.verify)(token, authConfig.secret);
-    req.userId = decoded.id;
+    req.userId = 0;
+    req.customerId = 0;
+
+    if (decoded.type === "user") {
+      req.userId = decoded.userId;
+    } else if (decoded.type === "customer") {
+      req.customerId = decoded.customer;
+    }
+
     return next();
   } catch (err) {
     console.error(err);
-    return res.status(401).json({ error: "Token invalid" });
+    return res.status(401).json({ error: "Invalid token" });
   }
 };
