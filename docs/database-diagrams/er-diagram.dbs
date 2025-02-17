@@ -1,0 +1,1447 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="MariaDb" database="MariaDb" id="MariaDb-22f0" >
+	<schema name="kurama" >
+		<table name="categories" row_count="0" spec="" >
+			<column name="category_id" type="INT" length="11" jt="4" mandatory="y" >
+				<identity><![CDATA[AUTO_INCREMENT]]></identity>
+			</column>
+			<column name="name" type="VARCHAR" length="255" jt="12" mandatory="y" />
+			<column name="description" type="TEXT" jt="-1" />
+			<column name="seo_url" prior="friendly_url" type="VARCHAR" length="255" jt="12" />
+			<column name="content" prior="xml_feed" type="TEXT" jt="-1" />
+			<column name="is_active" type="ENUM" jt="12" mandatory="y" >
+				<defo><![CDATA['yes']]></defo>
+				<enumeration><![CDATA['yes','no']]></enumeration>
+			</column>
+			<column name="created_at" type="DATETIME" jt="93" mandatory="y" />
+			<column name="modified_at" type="DATETIME" jt="93" mandatory="y" />
+			<index name="pk_categories" unique="PRIMARY_KEY" >
+				<column name="category_id" />
+			</index>
+			<options><![CDATA[ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci]]></options>
+		</table>
+		<table name="customer_addresses" row_count="0" spec="" >
+			<column name="customer_address_id" type="INT" length="11" jt="4" mandatory="y" >
+				<identity><![CDATA[AUTO_INCREMENT]]></identity>
+			</column>
+			<column name="customer_id" type="INT" length="11" jt="4" mandatory="y" />
+			<column name="is_main_address" type="ENUM" jt="12" >
+				<defo><![CDATA['no']]></defo>
+				<enumeration><![CDATA['yes','no']]></enumeration>
+			</column>
+			<column name="address_type" type="ENUM" jt="12" mandatory="y" >
+				<enumeration><![CDATA['delivery','billing']]></enumeration>
+			</column>
+			<column name="description" type="VARCHAR" length="255" jt="12" mandatory="y" >
+				<defo><![CDATA['billing']]></defo>
+			</column>
+			<column name="street" type="VARCHAR" length="255" jt="12" mandatory="y" />
+			<column name="street_number" type="INT" length="11" jt="4" mandatory="y" />
+			<column name="complement" type="VARCHAR" length="50" jt="12" />
+			<column name="postal_code" type="CHAR" length="8" jt="1" mandatory="y" />
+			<column name="neighborhood" type="VARCHAR" length="100" jt="12" mandatory="y" />
+			<column name="city" type="VARCHAR" length="100" jt="12" />
+			<column name="state" type="CHAR" length="2" jt="1" mandatory="y" />
+			<column name="country" type="CHAR" length="2" jt="1" >
+				<defo><![CDATA['BR']]></defo>
+			</column>
+			<column name="is_active" type="ENUM" jt="12" mandatory="y" >
+				<defo><![CDATA['yes']]></defo>
+				<enumeration><![CDATA['yes','no']]></enumeration>
+			</column>
+			<column name="created_at" type="DATETIME" jt="93" mandatory="y" />
+			<column name="modified_at" type="DATETIME" jt="93" mandatory="y" />
+			<index name="pk_customer_addresses" unique="PRIMARY_KEY" >
+				<column name="customer_address_id" />
+			</index>
+			<index name="customer_id" unique="NORMAL" >
+				<column name="customer_id" />
+			</index>
+			<fk name="customer_addresses_ibfk_1" to_schema="kurama" to_table="customers" delete_action="cascade" options="" >
+				<fk_column name="customer_id" pk="customer_id" />
+			</fk>
+			<options><![CDATA[ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci]]></options>
+		</table>
+		<table name="customer_reviews" spec="" >
+			<column name="customer_review_id" type="INT" length="10" jt="4" mandatory="y" unsigned="y" >
+				<identity><![CDATA[AUTO_INCREMENT]]></identity>
+			</column>
+			<column name="customer_id" type="INT" jt="4" mandatory="y" />
+			<column name="product_id" type="INT" jt="4" />
+			<column name="order_id" type="INT" jt="4" />
+			<column name="review_date" prior="review" type="DATETIME" jt="93" mandatory="y" />
+			<column name="review" type="TEXT" jt="-1" />
+			<column name="stars" type="TINYINT" jt="-6" unsigned="y" >
+				<defo><![CDATA[5]]></defo>
+			</column>
+			<column name="is_active" type="ENUM" jt="12" >
+				<defo><![CDATA['yes']]></defo>
+				<enumeration><![CDATA['yes','no']]></enumeration>
+			</column>
+			<column name="creation_date" type="DATETIME" jt="93" >
+				<defo><![CDATA[current_timestamp()]]></defo>
+			</column>
+			<column name="modification_date" type="DATE" jt="91" >
+				<defo><![CDATA[curdate()]]></defo>
+			</column>
+			<index name="pk_customer_reviews" unique="PRIMARY_KEY" >
+				<column name="customer_review_id" />
+			</index>
+			<index name="fk_customer_reviews_customers" unique="NORMAL" >
+				<column name="customer_id" />
+			</index>
+			<fk name="fk_customer_reviews_customers" to_schema="kurama" to_table="customers" >
+				<fk_column name="customer_id" pk="customer_id" />
+			</fk>
+			<options><![CDATA[ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci]]></options>
+		</table>
+		<table name="customers" row_count="0" spec="" >
+			<column name="customer_id" type="INT" length="11" jt="4" mandatory="y" >
+				<identity><![CDATA[AUTO_INCREMENT]]></identity>
+			</column>
+			<column name="full_name" type="VARCHAR" length="255" jt="12" mandatory="y" />
+			<column name="document_id" prior="cpf" type="VARCHAR" length="14" jt="12" mandatory="y" />
+			<column name="gender" type="ENUM" jt="12" >
+				<enumeration><![CDATA['M','F']]></enumeration>
+			</column>
+			<column name="birth_date" type="DATE" jt="91" mandatory="y" />
+			<column name="mobile_phone" type="VARCHAR" length="20" jt="12" mandatory="y" />
+			<column name="is_mobile_phone_confirmed" type="ENUM" jt="12" >
+				<defo><![CDATA['no']]></defo>
+				<enumeration><![CDATA['yes','no']]></enumeration>
+			</column>
+			<column name="email" type="VARCHAR" length="255" jt="12" mandatory="y" />
+			<column name="is_email_confirmed" type="ENUM" jt="12" >
+				<defo><![CDATA['no']]></defo>
+				<enumeration><![CDATA['yes','no']]></enumeration>
+			</column>
+			<column name="password_hash" type="VARCHAR" length="100" jt="12" mandatory="y" />
+			<column name="has_newsletter_subscription" prior="newsletter_subscription" type="ENUM" jt="12" >
+				<defo><![CDATA['no']]></defo>
+				<enumeration><![CDATA['yes','no']]></enumeration>
+			</column>
+			<column name="internal_note" type="TEXT" jt="-1" />
+			<column name="is_active" type="ENUM" jt="12" mandatory="y" >
+				<defo><![CDATA['yes']]></defo>
+				<enumeration><![CDATA['yes','no']]></enumeration>
+			</column>
+			<column name="modified_at" type="DATETIME" jt="93" mandatory="y" />
+			<column name="created_at" type="DATETIME" jt="93" mandatory="y" />
+			<index name="pk_customers" unique="PRIMARY_KEY" >
+				<column name="customer_id" />
+			</index>
+			<index name="cpf" unique="UNIQUE_KEY" >
+				<column name="document_id" />
+			</index>
+			<index name="idx_customer_email" unique="NORMAL" >
+				<column name="email" />
+			</index>
+			<options><![CDATA[ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci]]></options>
+		</table>
+		<table name="medias" spec="" >
+			<column name="media_id" type="INT" length="11" jt="4" mandatory="y" >
+				<identity><![CDATA[AUTO_INCREMENT]]></identity>
+			</column>
+			<column name="trip_id" type="INT" length="11" jt="4" />
+			<column name="product_id" type="INT" length="11" jt="4" />
+			<column name="review_id" type="INT" length="11" jt="4" />
+			<column name="user_id" type="INT" length="11" jt="4" />
+			<column name="customer_id" type="INT" length="11" jt="4" />
+			<column name="context" type="ENUM" jt="12" mandatory="y" >
+				<enumeration><![CDATA['product_main','product_gallery','review_item','trip_main','trip_gallery']]></enumeration>
+			</column>
+			<column name="type" type="ENUM" jt="12" mandatory="y" >
+				<enumeration><![CDATA['photo','video']]></enumeration>
+			</column>
+			<column name="path" type="VARCHAR" length="255" jt="12" mandatory="y" />
+			<column name="seo_file_name" prior="file_friendly_name" type="VARCHAR" length="200" jt="12" />
+			<column name="uploaded_at" type="DATETIME" jt="93" >
+				<defo><![CDATA[current_timestamp()]]></defo>
+			</column>
+			<column name="is_active" type="ENUM" jt="12" mandatory="y" >
+				<defo><![CDATA['yes']]></defo>
+				<enumeration><![CDATA['yes','no']]></enumeration>
+			</column>
+			<column name="created_at" type="DATETIME" jt="93" mandatory="y" />
+			<column name="modified_at" type="DATETIME" jt="93" mandatory="y" />
+			<index name="pk_medias" unique="PRIMARY_KEY" >
+				<column name="media_id" />
+			</index>
+			<index name="unq_seo_file_name" unique="UNIQUE_KEY" >
+				<column name="seo_file_name" />
+			</index>
+			<options><![CDATA[ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci]]></options>
+		</table>
+		<table name="order_history" row_count="0" spec="" >
+			<column name="order_history_id" prior="history_entry_id" type="INT" length="11" jt="4" mandatory="y" >
+				<identity><![CDATA[AUTO_INCREMENT]]></identity>
+			</column>
+			<column name="order_id" type="INT" length="11" jt="4" mandatory="y" />
+			<column name="event_date" type="DATETIME" jt="93" mandatory="y" />
+			<column name="status" type="ENUM" jt="12" >
+				<enumeration><![CDATA['pending_payment','pending_shipment','pending_receipt','completed','expired','canceled']]></enumeration>
+			</column>
+			<column name="description" type="TEXT" jt="-1" />
+			<column name="is_active" type="ENUM" jt="12" mandatory="y" >
+				<defo><![CDATA['yes']]></defo>
+				<enumeration><![CDATA['yes','no']]></enumeration>
+			</column>
+			<column name="created_at" type="DATETIME" jt="93" mandatory="y" />
+			<column name="modified_at" type="DATETIME" jt="93" mandatory="y" />
+			<index name="pk_order_history" unique="PRIMARY_KEY" >
+				<column name="order_history_id" />
+			</index>
+			<index name="order_id" unique="NORMAL" >
+				<column name="order_id" />
+			</index>
+			<fk name="order_history_ibfk_1" to_schema="kurama" to_table="orders" options="" >
+				<fk_column name="order_id" pk="order_id" />
+			</fk>
+			<options><![CDATA[ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci]]></options>
+		</table>
+		<table name="order_invoices" row_count="0" spec="" >
+			<column name="order_invoice_id" prior="invoice_id" type="INT" length="11" jt="4" mandatory="y" >
+				<identity><![CDATA[AUTO_INCREMENT]]></identity>
+			</column>
+			<column name="order_id" type="INT" length="11" jt="4" mandatory="y" />
+			<column name="payment_method_id" type="INT" length="11" jt="4" />
+			<column name="issue_date" type="DATETIME" jt="93" mandatory="y" />
+			<column name="due_date" type="DATE" jt="91" mandatory="y" />
+			<column name="payment_date" type="DATETIME" jt="93" />
+			<column name="installment_number" type="INT" length="11" jt="4" />
+			<column name="amount" type="DECIMAL" length="10" decimal="2" jt="3" mandatory="y" />
+			<column name="authentication_code" type="VARCHAR" length="255" jt="12" />
+			<column name="is_canceled" type="BOOLEAN" jt="-7" >
+				<defo><![CDATA[false]]></defo>
+			</column>
+			<column name="is_active" type="ENUM" jt="12" mandatory="y" >
+				<defo><![CDATA['yes']]></defo>
+				<enumeration><![CDATA['yes','no']]></enumeration>
+			</column>
+			<column name="created_at" type="DATETIME" jt="93" mandatory="y" />
+			<column name="modified_at" type="DATETIME" jt="93" mandatory="y" />
+			<index name="pk_order_invoices" unique="PRIMARY_KEY" >
+				<column name="order_invoice_id" />
+			</index>
+			<index name="order_id" unique="NORMAL" >
+				<column name="order_id" />
+			</index>
+			<index name="payment_method_id" unique="NORMAL" >
+				<column name="payment_method_id" />
+			</index>
+			<fk name="order_invoices_ibfk_1" to_schema="kurama" to_table="orders" options="" >
+				<fk_column name="order_id" pk="order_id" />
+			</fk>
+			<fk name="order_invoices_ibfk_2" to_schema="kurama" to_table="payment_methods" options="" >
+				<fk_column name="payment_method_id" pk="payment_method_id" />
+			</fk>
+			<options><![CDATA[ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci]]></options>
+		</table>
+		<table name="order_items" prior="order_tickets_0" >
+			<column name="order_ticket_id" prior="order_item_id" type="INT" length="11" jt="4" mandatory="y" >
+				<identity><![CDATA[AUTO_INCREMENT]]></identity>
+			</column>
+			<column name="order_id" type="INT" length="11" jt="4" mandatory="y" />
+			<column name="product_id" type="INT" length="11" jt="4" mandatory="y" />
+			<column name="product_item_id" prior="subproduct_id" type="INT" length="11" jt="4" mandatory="y" />
+			<column name="quantity" prior="holder_name" type="TINYINT" jt="-6" mandatory="y" >
+				<defo><![CDATA[1]]></defo>
+			</column>
+			<column name="holder_document" type="DECIMAL" length="12" decimal="2" jt="3" mandatory="y" unsigned="y" >
+				<defo><![CDATA[0.00]]></defo>
+			</column>
+			<column name="holder_phone" type="VARCHAR" length="20" jt="12" mandatory="y" />
+			<column name="exit_option" prior="text" type="TEXT" jt="-1" >
+				<defo><![CDATA['0']]></defo>
+			</column>
+			<column name="is_active" type="ENUM" jt="12" mandatory="y" >
+				<defo><![CDATA['yes']]></defo>
+				<enumeration><![CDATA['yes','no']]></enumeration>
+			</column>
+			<column name="created_at" type="DATETIME" jt="93" mandatory="y" />
+			<column name="modified_at" type="DATETIME" jt="93" mandatory="y" />
+			<index name="pk_order_items_0" unique="PRIMARY_KEY" >
+				<column name="order_ticket_id" />
+			</index>
+			<index name="order_id_0" unique="NORMAL" >
+				<column name="order_id" />
+			</index>
+			<index name="product_id_0" unique="NORMAL" >
+				<column name="product_id" />
+			</index>
+			<index name="subproduct_id_0" unique="NORMAL" >
+				<column name="product_item_id" />
+			</index>
+			<fk name="order_items_ibfk_4" to_schema="kurama" to_table="orders" >
+				<fk_column name="order_id" pk="order_id" />
+			</fk>
+			<fk name="order_items_ibfk_5" to_schema="kurama" to_table="products" >
+				<fk_column name="product_id" pk="product_id" />
+			</fk>
+			<fk name="order_items_ibfk_6" to_schema="kurama" to_table="product_items" >
+				<fk_column name="product_item_id" pk="product_item_id" />
+			</fk>
+			<options><![CDATA[ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci]]></options>
+		</table>
+		<table name="order_tickets" prior="order_items" row_count="0" spec="" >
+			<column name="order_ticket_id" prior="order_item_id" type="INT" length="11" jt="4" mandatory="y" >
+				<identity><![CDATA[AUTO_INCREMENT]]></identity>
+			</column>
+			<column name="order_id" type="INT" length="11" jt="4" mandatory="y" />
+			<column name="order_item_id" type="INT" jt="4" unsigned="y" />
+			<column name="product_id" type="INT" length="11" jt="4" mandatory="y" />
+			<column name="product_item_id" prior="subproduct_id" type="INT" length="11" jt="4" mandatory="y" />
+			<column name="holder_name" prior="quantity" type="VARCHAR" length="200" jt="12" mandatory="y" />
+			<column name="holder_document" type="VARCHAR" length="250" jt="12" mandatory="y" />
+			<column name="holder_phone" type="VARCHAR" length="20" jt="12" mandatory="y" />
+			<column name="exit_option" prior="text" type="TEXT" jt="-1" >
+				<defo><![CDATA['0']]></defo>
+			</column>
+			<column name="is_active" type="ENUM" jt="12" mandatory="y" >
+				<defo><![CDATA['yes']]></defo>
+				<enumeration><![CDATA['yes','no']]></enumeration>
+			</column>
+			<column name="created_at" type="DATETIME" jt="93" mandatory="y" />
+			<column name="modified_at" type="DATETIME" jt="93" mandatory="y" />
+			<index name="pk_order_items" unique="PRIMARY_KEY" >
+				<column name="order_ticket_id" />
+			</index>
+			<index name="order_id" unique="NORMAL" >
+				<column name="order_id" />
+			</index>
+			<index name="product_id" unique="NORMAL" >
+				<column name="product_id" />
+			</index>
+			<index name="subproduct_id" unique="NORMAL" >
+				<column name="product_item_id" />
+			</index>
+			<fk name="order_items_ibfk_1" to_schema="kurama" to_table="orders" options="" >
+				<fk_column name="order_id" pk="order_id" />
+			</fk>
+			<fk name="order_items_ibfk_2" to_schema="kurama" to_table="products" options="" >
+				<fk_column name="product_id" pk="product_id" />
+			</fk>
+			<fk name="order_items_ibfk_3" to_schema="kurama" to_table="product_items" options="" >
+				<fk_column name="product_item_id" pk="product_item_id" />
+			</fk>
+			<options><![CDATA[ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci]]></options>
+		</table>
+		<table name="orders" row_count="0" spec="" >
+			<column name="order_id" type="INT" length="11" jt="4" mandatory="y" >
+				<identity><![CDATA[AUTO_INCREMENT]]></identity>
+			</column>
+			<column name="customer_id" type="INT" length="11" jt="4" mandatory="y" />
+			<column name="customer_address_id" prior="address_id" type="INT" length="11" jt="4" />
+			<column name="payment_method_id" type="INT" length="11" jt="4" />
+			<column name="voucher_code" type="VARCHAR" length="50" jt="12" />
+			<column name="start_date" type="DATETIME" jt="93" mandatory="y" />
+			<column name="end_date" type="DATETIME" jt="93" />
+			<column name="status" type="ENUM" jt="12" >
+				<defo><![CDATA['pending_payment']]></defo>
+				<enumeration><![CDATA['cart','pending_payment','pending_shipment','pending_receipt','completed','expired','canceled']]></enumeration>
+			</column>
+			<column name="subtotal" type="DECIMAL" length="10" decimal="2" jt="3" />
+			<column name="shipping_cost" type="DECIMAL" length="10" decimal="2" jt="3" />
+			<column name="discount_amount" type="DECIMAL" length="10" decimal="2" jt="3" />
+			<column name="is_active" type="ENUM" jt="12" mandatory="y" >
+				<defo><![CDATA['yes']]></defo>
+				<enumeration><![CDATA['yes','no']]></enumeration>
+			</column>
+			<column name="created_at" type="DATETIME" jt="93" mandatory="y" />
+			<column name="modified_at" type="DATETIME" jt="93" mandatory="y" />
+			<index name="pk_orders" unique="PRIMARY_KEY" >
+				<column name="order_id" />
+			</index>
+			<index name="customer_id" unique="NORMAL" >
+				<column name="customer_id" />
+			</index>
+			<index name="address_id" unique="NORMAL" >
+				<column name="customer_address_id" />
+			</index>
+			<index name="payment_method_id" unique="NORMAL" >
+				<column name="payment_method_id" />
+			</index>
+			<index name="voucher_code" unique="NORMAL" >
+				<column name="voucher_code" />
+			</index>
+			<fk name="orders_ibfk_1" to_schema="kurama" to_table="customers" options="" >
+				<fk_column name="customer_id" pk="customer_id" />
+			</fk>
+			<fk name="orders_ibfk_2" to_schema="kurama" to_table="customer_addresses" options="" >
+				<fk_column name="customer_address_id" pk="customer_address_id" />
+			</fk>
+			<fk name="orders_ibfk_3" to_schema="kurama" to_table="payment_methods" options="" >
+				<fk_column name="payment_method_id" pk="payment_method_id" />
+			</fk>
+			<fk name="orders_ibfk_4" to_schema="kurama" to_table="vouchers" options="" >
+				<fk_column name="voucher_code" pk="code" />
+			</fk>
+			<options><![CDATA[ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci]]></options>
+		</table>
+		<table name="payment_events" prior="payment_history" row_count="0" spec="" >
+			<column name="payment_event_id" type="INT" length="11" jt="4" mandatory="y" >
+				<identity><![CDATA[AUTO_INCREMENT]]></identity>
+			</column>
+			<column name="order_id" type="INT" length="11" jt="4" mandatory="y" />
+			<column name="event_date" type="DATETIME" jt="93" mandatory="y" />
+			<column name="event_type" type="VARCHAR" length="255" jt="12" mandatory="y" />
+			<column name="details" type="TEXT" jt="-1" />
+			<column name="error_code" type="VARCHAR" length="50" jt="12" />
+			<column name="amount" type="DECIMAL" length="10" decimal="2" jt="3" />
+			<column name="status" type="ENUM" jt="12" >
+				<defo><![CDATA['pending']]></defo>
+				<enumeration><![CDATA['pending','processed']]></enumeration>
+			</column>
+			<column name="is_active" type="ENUM" jt="12" mandatory="y" >
+				<defo><![CDATA['yes']]></defo>
+				<enumeration><![CDATA['yes','no']]></enumeration>
+			</column>
+			<column name="created_at" type="DATETIME" jt="93" mandatory="y" />
+			<column name="modified_at" type="DATETIME" jt="93" mandatory="y" />
+			<index name="pk_payment_history" unique="PRIMARY_KEY" >
+				<column name="payment_event_id" />
+			</index>
+			<index name="order_id" unique="NORMAL" >
+				<column name="order_id" />
+			</index>
+			<fk name="payment_history_ibfk_1" to_schema="kurama" to_table="orders" options="" >
+				<fk_column name="order_id" pk="order_id" />
+			</fk>
+			<options><![CDATA[ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci]]></options>
+		</table>
+		<table name="payment_methods" row_count="0" spec="" >
+			<column name="payment_method_id" type="INT" length="11" jt="4" mandatory="y" >
+				<identity><![CDATA[AUTO_INCREMENT]]></identity>
+			</column>
+			<column name="name" type="VARCHAR" length="50" jt="12" mandatory="y" />
+			<column name="type" type="ENUM" jt="12" mandatory="y" >
+				<enumeration><![CDATA['CREDIT_CARD','BANK_SLIP','BANK_TRANSFER','VOUCHER']]></enumeration>
+			</column>
+			<column name="fee" type="DECIMAL" length="5" decimal="2" jt="3" >
+				<defo><![CDATA[0.00]]></defo>
+			</column>
+			<column name="processing_days" type="INT" length="2" jt="4" >
+				<defo><![CDATA[0]]></defo>
+			</column>
+			<column name="is_active" type="ENUM" jt="12" mandatory="y" >
+				<defo><![CDATA['yes']]></defo>
+				<enumeration><![CDATA['yes','no']]></enumeration>
+			</column>
+			<column name="created_at" type="DATETIME" jt="93" mandatory="y" />
+			<column name="modified_at" type="DATETIME" jt="93" mandatory="y" />
+			<index name="pk_payment_methods" unique="PRIMARY_KEY" >
+				<column name="payment_method_id" />
+			</index>
+			<options><![CDATA[ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci]]></options>
+		</table>
+		<table name="payment_transactions" prior="card_transactions" row_count="0" spec="" >
+			<column name="payment_transaction_id" prior="transaction_id" type="INT" length="11" jt="4" mandatory="y" >
+				<identity><![CDATA[AUTO_INCREMENT]]></identity>
+			</column>
+			<column name="order_id" type="INT" length="11" jt="4" mandatory="y" />
+			<column name="order_invoice_id" type="INT" jt="4" />
+			<column name="card_brand" type="VARCHAR" length="20" jt="12" mandatory="y" />
+			<column name="installments" type="INT" length="2" jt="4" mandatory="y" />
+			<column name="authorization_code" type="VARCHAR" length="255" jt="12" />
+			<column name="installment_value" type="DECIMAL" length="10" decimal="2" jt="3" mandatory="y" />
+			<column name="transaction_reference" type="VARCHAR" length="255" jt="12" />
+			<column name="unique_sequence_number" type="VARCHAR" length="255" jt="12" />
+			<column name="cardholder_name" type="VARCHAR" length="255" jt="12" />
+			<column name="processing_date" type="DATETIME" jt="93" />
+			<column name="is_active" type="ENUM" jt="12" mandatory="y" >
+				<defo><![CDATA['yes']]></defo>
+				<enumeration><![CDATA['yes','no']]></enumeration>
+			</column>
+			<column name="created_at" type="DATETIME" jt="93" mandatory="y" />
+			<column name="modified_at" type="DATETIME" jt="93" mandatory="y" />
+			<index name="pk_card_transactions" unique="PRIMARY_KEY" >
+				<column name="payment_transaction_id" />
+			</index>
+			<index name="order_id" unique="NORMAL" >
+				<column name="order_id" />
+			</index>
+			<fk name="card_transactions_ibfk_1" to_schema="kurama" to_table="orders" options="" >
+				<fk_column name="order_id" pk="order_id" />
+			</fk>
+			<fk name="fk_payment_transactions" to_schema="kurama" to_table="order_invoices" >
+				<fk_column name="order_invoice_id" pk="order_invoice_id" />
+			</fk>
+			<options><![CDATA[ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci]]></options>
+		</table>
+		<table name="product_items" prior="subproducts" row_count="0" spec="" >
+			<column name="product_item_id" prior="subproduct_id" type="INT" length="11" jt="4" mandatory="y" >
+				<identity><![CDATA[AUTO_INCREMENT]]></identity>
+			</column>
+			<column name="product_id" type="INT" length="11" jt="4" mandatory="y" />
+			<column name="name" type="VARCHAR" length="255" jt="12" mandatory="y" />
+			<column name="start_sell_date" type="DATE" jt="91" />
+			<column name="end_sell_date" type="DATE" jt="91" />
+			<column name="status" prior="is_available" type="ENUM" jt="12" >
+				<defo><![CDATA['unavailable']]></defo>
+				<enumeration><![CDATA['available','unavailable','hidden']]></enumeration>
+			</column>
+			<column name="price" type="DECIMAL" length="12" decimal="2" jt="3" mandatory="y" unsigned="y" >
+				<defo><![CDATA[0.00]]></defo>
+			</column>
+			<column name="normal_price" type="DECIMAL" length="12" decimal="2" jt="3" unsigned="y" />
+			<column name="is_active" type="ENUM" jt="12" mandatory="y" >
+				<defo><![CDATA['yes']]></defo>
+				<enumeration><![CDATA['yes','no']]></enumeration>
+			</column>
+			<column name="created_at" type="DATETIME" jt="93" mandatory="y" />
+			<column name="modified_at" type="DATETIME" jt="93" mandatory="y" />
+			<index name="pk_subproducts" unique="PRIMARY_KEY" >
+				<column name="product_item_id" />
+			</index>
+			<index name="product_id" unique="NORMAL" >
+				<column name="product_id" />
+			</index>
+			<fk name="subproducts_ibfk_1" to_schema="kurama" to_table="products" delete_action="cascade" options="" >
+				<fk_column name="product_id" pk="product_id" />
+			</fk>
+			<options><![CDATA[ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci]]></options>
+		</table>
+		<table name="products" row_count="0" spec="" >
+			<column name="product_id" type="INT" length="11" jt="4" mandatory="y" >
+				<identity><![CDATA[AUTO_INCREMENT]]></identity>
+			</column>
+			<column name="category_id" type="INT" jt="4" />
+			<column name="trip_id" prior="brand_id" type="INT" jt="4" />
+			<column name="type" type="VARCHAR" length="200" jt="12" />
+			<column name="name" type="VARCHAR" length="255" jt="12" mandatory="y" />
+			<column name="when" prior="when_and_where" type="VARCHAR" length="200" jt="12" mandatory="y" />
+			<column name="where" type="VARCHAR" length="200" jt="12" mandatory="y" />
+			<column name="description" prior="additional_description" type="TEXT" jt="-1" />
+			<column name="exit_options" prior="exit_options_json" type="TEXT" jt="-1" />
+			<column name="status" prior="is_available" type="ENUM" jt="12" >
+				<defo><![CDATA['unavailable']]></defo>
+				<enumeration><![CDATA['available','unavailable','hidden']]></enumeration>
+			</column>
+			<column name="is_active" type="ENUM" jt="12" mandatory="y" >
+				<defo><![CDATA['yes']]></defo>
+				<enumeration><![CDATA['yes','no']]></enumeration>
+			</column>
+			<column name="created_at" type="DATETIME" jt="93" mandatory="y" />
+			<column name="modified_at" type="DATETIME" jt="93" mandatory="y" />
+			<index name="pk_products" unique="PRIMARY_KEY" >
+				<column name="product_id" />
+			</index>
+			<index name="idx_product_brand" unique="NORMAL" >
+				<column name="trip_id" />
+			</index>
+			<index name="fk_products_categories" unique="NORMAL" >
+				<column name="category_id" />
+			</index>
+			<fk name="products_ibfk_1" to_schema="kurama" to_table="trips" options="" >
+				<fk_column name="trip_id" pk="trip_id" />
+			</fk>
+			<fk name="fk_products_categories" to_schema="kurama" to_table="categories" >
+				<fk_column name="category_id" pk="category_id" />
+			</fk>
+			<options><![CDATA[ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci]]></options>
+		</table>
+		<table name="trips" prior="brands" row_count="0" spec="" >
+			<column name="trip_id" prior="brand_id" type="INT" length="11" jt="4" mandatory="y" >
+				<identity><![CDATA[AUTO_INCREMENT]]></identity>
+			</column>
+			<column name="name" type="VARCHAR" length="255" jt="12" mandatory="y" />
+			<column name="occurrence" type="TEXT" jt="-1" />
+			<column name="description" type="TEXT" jt="-1" mandatory="y" />
+			<column name="is_active" type="ENUM" jt="12" mandatory="y" >
+				<defo><![CDATA['yes']]></defo>
+				<enumeration><![CDATA['yes','no']]></enumeration>
+			</column>
+			<column name="created_at" type="DATETIME" jt="93" mandatory="y" />
+			<column name="modified_at" type="DATETIME" jt="93" mandatory="y" />
+			<index name="pk_brands" unique="PRIMARY_KEY" >
+				<column name="trip_id" />
+			</index>
+			<options><![CDATA[ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci]]></options>
+		</table>
+		<table name="users" spec="" >
+			<column name="user_id" prior="id" type="INT" length="11" jt="4" mandatory="y" >
+				<identity><![CDATA[AUTO_INCREMENT]]></identity>
+			</column>
+			<column name="name" type="VARCHAR" length="255" jt="12" mandatory="y" />
+			<column name="email" type="VARCHAR" length="255" jt="12" mandatory="y" />
+			<column name="password_hash" type="VARCHAR" length="255" jt="12" mandatory="y" />
+			<column name="is_active" type="ENUM" jt="12" mandatory="y" >
+				<defo><![CDATA['yes']]></defo>
+				<enumeration><![CDATA['yes','no']]></enumeration>
+			</column>
+			<column name="created_at" type="DATETIME" jt="93" mandatory="y" >
+				<defo><![CDATA[current_timestamp()]]></defo>
+			</column>
+			<column name="modified_at" type="DATETIME" jt="93" mandatory="y" >
+				<defo><![CDATA[current_timestamp()]]></defo>
+				<column_options><![CDATA[ON UPDATE current_timestamp()]]></column_options>
+			</column>
+			<index name="pk_users" unique="PRIMARY_KEY" >
+				<column name="user_id" />
+			</index>
+			<index name="email" unique="UNIQUE_KEY" >
+				<column name="email" />
+			</index>
+			<options><![CDATA[ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci]]></options>
+		</table>
+		<table name="vouchers" row_count="0" spec="" >
+			<column name="voucher_id" type="INT" length="11" jt="4" mandatory="y" >
+				<identity><![CDATA[AUTO_INCREMENT]]></identity>
+			</column>
+			<column name="code" type="VARCHAR" length="50" jt="12" mandatory="y" />
+			<column name="type" type="ENUM" jt="12" mandatory="y" >
+				<enumeration><![CDATA['CREDIT','FIXED_DISCOUNT','PERCENTAGE_DISCOUNT','FREE_SHIPPING']]></enumeration>
+			</column>
+			<column name="value" type="DECIMAL" length="10" decimal="2" jt="3" mandatory="y" />
+			<column name="expiration_date" type="DATE" jt="91" />
+			<column name="max_usage" type="INT" length="11" jt="4" >
+				<defo><![CDATA[1]]></defo>
+			</column>
+			<column name="customer_id" type="INT" length="11" jt="4" />
+			<column name="is_used" type="BOOLEAN" jt="-7" >
+				<defo><![CDATA[false]]></defo>
+			</column>
+			<column name="is_active" type="ENUM" jt="12" mandatory="y" >
+				<defo><![CDATA['yes']]></defo>
+				<enumeration><![CDATA['yes','no']]></enumeration>
+			</column>
+			<column name="created_at" type="DATETIME" jt="93" mandatory="y" />
+			<column name="modified_at" type="DATETIME" jt="93" mandatory="y" />
+			<index name="pk_vouchers" unique="PRIMARY_KEY" >
+				<column name="voucher_id" />
+			</index>
+			<index name="code" unique="UNIQUE_KEY" >
+				<column name="code" />
+			</index>
+			<index name="customer_id" unique="NORMAL" >
+				<column name="customer_id" />
+			</index>
+			<fk name="vouchers_ibfk_1" to_schema="kurama" to_table="customers" options="" >
+				<fk_column name="customer_id" pk="customer_id" />
+			</fk>
+			<options><![CDATA[ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci]]></options>
+		</table>
+	</schema>
+	<layout name="Main Diagram" id="Diagram-720" show_relation="columns" >
+		<entity schema="kurama" name="categories" color="BED3F4" x="289" y="1173" />
+		<entity schema="kurama" name="customer_addresses" color="C7F4BE" x="697" y="102" />
+		<entity schema="kurama" name="customer_reviews" color="C7F4BE" x="697" y="459" />
+		<entity schema="kurama" name="customers" color="C7F4BE" x="408" y="102" />
+		<entity schema="kurama" name="medias" color="3986C1" x="85" y="1071" />
+		<entity schema="kurama" name="order_history" color="F4F3BE" x="1513" y="85" />
+		<entity schema="kurama" name="order_invoices" color="F4F3BE" x="1547" y="391" />
+		<entity schema="kurama" name="order_items" color="F4F3BE" x="1309" y="425" />
+		<entity schema="kurama" name="order_tickets" color="F4F3BE" x="1122" y="425" />
+		<entity schema="kurama" name="orders" color="F4F3BE" x="1190" y="85" />
+		<entity schema="kurama" name="payment_events" color="F4F3BE" x="1785" y="85" />
+		<entity schema="kurama" name="payment_methods" color="F4F3BE" x="1394" y="697" />
+		<entity schema="kurama" name="payment_transactions" color="F4F3BE" x="1819" y="374" />
+		<entity schema="kurama" name="product_items" color="BED3F4" x="544" y="816" />
+		<entity schema="kurama" name="products" color="BED3F4" x="289" y="833" />
+		<entity schema="kurama" name="trips" color="BED3F4" x="85" y="833" />
+		<entity schema="kurama" name="users" color="C1399D" x="51" y="102" />
+		<entity schema="kurama" name="vouchers" color="BED3F4" x="527" y="1190" />
+		<group name="Catalog &amp; Cart" color="ECF0F7" >
+			<entity schema="kurama" name="trips" />
+			<entity schema="kurama" name="medias" />
+			<entity schema="kurama" name="vouchers" />
+			<entity schema="kurama" name="product_items" />
+			<entity schema="kurama" name="categories" />
+			<entity schema="kurama" name="products" />
+		</group>
+		<group name="Customer" color="00FF00" >
+			<entity schema="kurama" name="customer_addresses" />
+			<entity schema="kurama" name="customers" />
+			<entity schema="kurama" name="customer_reviews" />
+		</group>
+		<group name="Checkout" color="FFFF00" >
+			<entity schema="kurama" name="order_history" />
+			<entity schema="kurama" name="payment_methods" />
+			<entity schema="kurama" name="order_items" />
+			<entity schema="kurama" name="order_invoices" />
+			<entity schema="kurama" name="order_tickets" />
+			<entity schema="kurama" name="orders" />
+			<entity schema="kurama" name="payment_events" />
+			<entity schema="kurama" name="payment_transactions" />
+		</group>
+		<group name="API Control &amp; Admin Area" color="800080" >
+			<entity schema="kurama" name="users" />
+		</group>
+		<script name="SQL_Editor" id="Editor-bee" language="SQL" >
+			<string><![CDATA[CREATE SCHEMA kurama;
+
+CREATE  TABLE brands ( 
+	brand_id             INT    NOT NULL AUTO_INCREMENT  PRIMARY KEY,
+	name                 VARCHAR(255)    NOT NULL   
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE  TABLE categories ( 
+	category_id          INT    NOT NULL AUTO_INCREMENT  PRIMARY KEY,
+	name                 VARCHAR(255)    NOT NULL   ,
+	description          TEXT       ,
+	friendly_url         VARCHAR(255)       ,
+	xml_feed             TEXT       ,
+	xml_product_list     TEXT       
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE  TABLE customers ( 
+	customer_id          INT    NOT NULL AUTO_INCREMENT  PRIMARY KEY,
+	full_name            VARCHAR(255)    NOT NULL   ,
+	cpf                  VARCHAR(14)    NOT NULL   ,
+	gender               ENUM('M','F')    NOT NULL   ,
+	birth_date           DATE    NOT NULL   ,
+	home_phone           VARCHAR(20)       ,
+	mobile_phone         VARCHAR(20)       ,
+	business_phone       VARCHAR(20)       ,
+	email                VARCHAR(255)    NOT NULL   ,
+	password             VARCHAR(12)    NOT NULL   ,
+	nickname             VARCHAR(50)       ,
+	newsletter_subscription BOOLEAN  DEFAULT false     ,
+	internal_note        TEXT       ,
+	address_description  VARCHAR(255)       ,
+	street               VARCHAR(255)       ,
+	street_number        INT       ,
+	address_complement   VARCHAR(50)       ,
+	postal_code          CHAR(8)       ,
+	city                 VARCHAR(100)       ,
+	neighborhood         VARCHAR(100)       ,
+	state                CHAR(2)  DEFAULT 'SP'     ,
+	country              CHAR(2)  DEFAULT 'BR'     ,
+	modified_at          DATETIME       ,
+	created_at           DATETIME       ,
+	CONSTRAINT cpf UNIQUE ( cpf ) 
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE INDEX idx_customer_email ON customers ( email );
+
+CREATE  TABLE payment_methods ( 
+	payment_method_id    INT    NOT NULL AUTO_INCREMENT  PRIMARY KEY,
+	name                 VARCHAR(50)    NOT NULL   ,
+	`type`               ENUM('CREDIT_CARD','BANK_SLIP','BANK_TRANSFER','VOUCHER')    NOT NULL   ,
+	fee                  DECIMAL(5,2)  DEFAULT 0.00     ,
+	processing_days      INT  DEFAULT 0     ,
+	is_active            BOOLEAN  DEFAULT true     
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE  TABLE products ( 
+	product_id           INT    NOT NULL AUTO_INCREMENT  PRIMARY KEY,
+	name                 VARCHAR(255)    NOT NULL   ,
+	brand_id             INT    NOT NULL   ,
+	is_available         ENUM('Y','N')  DEFAULT 'Y'     ,
+	photo                VARCHAR(255)       ,
+	short_description    TEXT       ,
+	additional_description TEXT       ,
+	frequently_bought_together TEXT       ,
+	cross_sell_suggestions TEXT       ,
+	created_at           DATETIME       
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE INDEX idx_product_brand ON products ( brand_id );
+
+CREATE  TABLE subproducts ( 
+	subproduct_id        INT    NOT NULL AUTO_INCREMENT  PRIMARY KEY,
+	product_id           INT    NOT NULL   ,
+	name                 VARCHAR(255)    NOT NULL   ,
+	is_available         ENUM('Y','N')  DEFAULT 'Y'     
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE INDEX product_id ON subproducts ( product_id );
+
+CREATE  TABLE vouchers ( 
+	voucher_id           INT    NOT NULL AUTO_INCREMENT  PRIMARY KEY,
+	code                 VARCHAR(50)    NOT NULL   ,
+	`type`               ENUM('CREDIT','FIXED_DISCOUNT','PERCENTAGE_DISCOUNT','FREE_SHIPPING')    NOT NULL   ,
+	value                DECIMAL(10,2)    NOT NULL   ,
+	expiration_date      DATE       ,
+	max_usage            INT  DEFAULT 1     ,
+	customer_id          INT       ,
+	is_used              BOOLEAN  DEFAULT false     ,
+	CONSTRAINT code UNIQUE ( code ) 
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE INDEX customer_id ON vouchers ( customer_id );
+
+CREATE  TABLE customer_addresses ( 
+	customer_address_id  INT    NOT NULL AUTO_INCREMENT  PRIMARY KEY,
+	customer_id          INT    NOT NULL   ,
+	description          VARCHAR(255)    NOT NULL   ,
+	recipient            VARCHAR(255)    NOT NULL   ,
+	address_type         ENUM('delivery','billing')    NOT NULL   ,
+	street               VARCHAR(255)    NOT NULL   ,
+	street_number        INT    NOT NULL   ,
+	complement           VARCHAR(50)       ,
+	postal_code          CHAR(8)    NOT NULL   ,
+	neighborhood         VARCHAR(100)    NOT NULL   ,
+	city                 VARCHAR(100)       ,
+	state                CHAR(2)    NOT NULL   ,
+	country              CHAR(2)  DEFAULT 'BR'     
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE INDEX customer_id ON customer_addresses ( customer_id );
+
+CREATE  TABLE orders ( 
+	order_id             INT    NOT NULL AUTO_INCREMENT  PRIMARY KEY,
+	customer_id          INT    NOT NULL   ,
+	address_id           INT       ,
+	start_date           DATETIME    NOT NULL   ,
+	end_date             DATETIME       ,
+	`status`             ENUM('pending_payment','pending_shipment','pending_receipt','completed','expired','canceled')  DEFAULT 'pending_payment'     ,
+	transaction_id       VARCHAR(255)       ,
+	subtotal             DECIMAL(10,2)       ,
+	shipping_cost        DECIMAL(10,2)       ,
+	discount_amount      DECIMAL(10,2)       ,
+	payment_method_id    INT       ,
+	voucher_code         VARCHAR(50)       
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE INDEX customer_id ON orders ( customer_id );
+
+CREATE INDEX address_id ON orders ( address_id );
+
+CREATE INDEX payment_method_id ON orders ( payment_method_id );
+
+CREATE INDEX voucher_code ON orders ( voucher_code );
+
+CREATE INDEX idx_order_transaction ON orders ( transaction_id );
+
+CREATE  TABLE payment_events ( 
+	payment_event_id     INT    NOT NULL AUTO_INCREMENT  PRIMARY KEY,
+	order_id             INT    NOT NULL   ,
+	event_date           DATETIME    NOT NULL   ,
+	event_type           VARCHAR(255)    NOT NULL   ,
+	details              TEXT       ,
+	error_code           VARCHAR(50)       ,
+	amount               DECIMAL(10,2)       
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE INDEX order_id ON payment_events ( order_id );
+
+CREATE  TABLE product_categories ( 
+	product_id           INT    NOT NULL   ,
+	category_id          INT    NOT NULL   ,
+	CONSTRAINT pk_product_categories PRIMARY KEY ( product_id, category_id )
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE INDEX category_id ON product_categories ( category_id );
+
+CREATE  TABLE card_transactions ( 
+	transaction_id       INT    NOT NULL AUTO_INCREMENT  PRIMARY KEY,
+	order_id             INT    NOT NULL   ,
+	card_brand           VARCHAR(20)    NOT NULL   ,
+	installments         INT    NOT NULL   ,
+	authorization_code   VARCHAR(255)       ,
+	installment_value    DECIMAL(10,2)    NOT NULL   ,
+	transaction_reference VARCHAR(255)       ,
+	unique_sequence_number VARCHAR(255)       ,
+	bin_number           VARCHAR(20)       ,
+	cardholder_name      VARCHAR(255)       ,
+	processing_date      DATETIME       
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE INDEX order_id ON card_transactions ( order_id );
+
+CREATE  TABLE order_history ( 
+	order_history_id     INT    NOT NULL AUTO_INCREMENT  PRIMARY KEY,
+	order_id             INT    NOT NULL   ,
+	event_date           DATETIME    NOT NULL   ,
+	`status`             ENUM('pending_payment','pending_shipment','pending_receipt','completed','expired','canceled')       ,
+	description          TEXT       
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE INDEX order_id ON order_history ( order_id );
+
+CREATE  TABLE order_invoices ( 
+	order_invoice_id     INT    NOT NULL AUTO_INCREMENT  PRIMARY KEY,
+	order_id             INT    NOT NULL   ,
+	payment_method_id    INT       ,
+	issue_date           DATETIME    NOT NULL   ,
+	due_date             DATE    NOT NULL   ,
+	payment_date         DATETIME       ,
+	installment_number   INT       ,
+	amount               DECIMAL(10,2)    NOT NULL   ,
+	authentication_code  VARCHAR(255)       ,
+	is_canceled          BOOLEAN  DEFAULT false     
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE INDEX order_id ON order_invoices ( order_id );
+
+CREATE INDEX payment_method_id ON order_invoices ( payment_method_id );
+
+CREATE  TABLE order_items ( 
+	order_item_id        INT    NOT NULL AUTO_INCREMENT  PRIMARY KEY,
+	order_id             INT    NOT NULL   ,
+	product_id           INT    NOT NULL   ,
+	subproduct_id        INT    NOT NULL   ,
+	quantity             INT    NOT NULL   ,
+	needs_gift_wrapping  BOOLEAN  DEFAULT false     
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE INDEX order_id ON order_items ( order_id );
+
+CREATE INDEX product_id ON order_items ( product_id );
+
+CREATE INDEX subproduct_id ON order_items ( subproduct_id );
+
+ALTER TABLE card_transactions ADD CONSTRAINT card_transactions_ibfk_1 FOREIGN KEY ( order_id ) REFERENCES orders( order_id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE customer_addresses ADD CONSTRAINT customer_addresses_ibfk_1 FOREIGN KEY ( customer_id ) REFERENCES customers( customer_id ) ON DELETE CASCADE ON UPDATE NO ACTION;
+
+ALTER TABLE order_history ADD CONSTRAINT order_history_ibfk_1 FOREIGN KEY ( order_id ) REFERENCES orders( order_id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE order_invoices ADD CONSTRAINT order_invoices_ibfk_1 FOREIGN KEY ( order_id ) REFERENCES orders( order_id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE order_invoices ADD CONSTRAINT order_invoices_ibfk_2 FOREIGN KEY ( payment_method_id ) REFERENCES payment_methods( payment_method_id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE order_items ADD CONSTRAINT order_items_ibfk_1 FOREIGN KEY ( order_id ) REFERENCES orders( order_id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE order_items ADD CONSTRAINT order_items_ibfk_2 FOREIGN KEY ( product_id ) REFERENCES products( product_id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE order_items ADD CONSTRAINT order_items_ibfk_3 FOREIGN KEY ( subproduct_id ) REFERENCES subproducts( subproduct_id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE orders ADD CONSTRAINT orders_ibfk_1 FOREIGN KEY ( customer_id ) REFERENCES customers( customer_id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE orders ADD CONSTRAINT orders_ibfk_2 FOREIGN KEY ( address_id ) REFERENCES customer_addresses( customer_address_id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE orders ADD CONSTRAINT orders_ibfk_3 FOREIGN KEY ( payment_method_id ) REFERENCES payment_methods( payment_method_id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE orders ADD CONSTRAINT orders_ibfk_4 FOREIGN KEY ( voucher_code ) REFERENCES vouchers( code ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE payment_events ADD CONSTRAINT payment_history_ibfk_1 FOREIGN KEY ( order_id ) REFERENCES orders( order_id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE product_categories ADD CONSTRAINT product_categories_ibfk_1 FOREIGN KEY ( product_id ) REFERENCES products( product_id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE product_categories ADD CONSTRAINT product_categories_ibfk_2 FOREIGN KEY ( category_id ) REFERENCES categories( category_id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE products ADD CONSTRAINT products_ibfk_1 FOREIGN KEY ( brand_id ) REFERENCES brands( brand_id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE subproducts ADD CONSTRAINT subproducts_ibfk_1 FOREIGN KEY ( product_id ) REFERENCES products( product_id ) ON DELETE CASCADE ON UPDATE NO ACTION;
+
+ALTER TABLE vouchers ADD CONSTRAINT vouchers_ibfk_1 FOREIGN KEY ( customer_id ) REFERENCES customers( customer_id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+]]></string>
+		</script>
+		<script name="SQL_Editor_001" id="Editor-243a" language="SQL" >
+			<string><![CDATA[CREATE SCHEMA kurama;
+
+CREATE  TABLE brands ( 
+	brand_id             INT    NOT NULL AUTO_INCREMENT  PRIMARY KEY,
+	name                 VARCHAR(255)    NOT NULL   
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE  TABLE categories ( 
+	category_id          INT    NOT NULL AUTO_INCREMENT  PRIMARY KEY,
+	name                 VARCHAR(255)    NOT NULL   ,
+	description          TEXT       ,
+	friendly_url         VARCHAR(255)       ,
+	xml_feed             TEXT       ,
+	xml_product_list     TEXT       
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE  TABLE customers ( 
+	customer_id          INT    NOT NULL AUTO_INCREMENT  PRIMARY KEY,
+	full_name            VARCHAR(255)    NOT NULL   ,
+	cpf                  VARCHAR(14)    NOT NULL   ,
+	gender               ENUM('M','F')    NOT NULL   ,
+	birth_date           DATE    NOT NULL   ,
+	home_phone           VARCHAR(20)       ,
+	mobile_phone         VARCHAR(20)       ,
+	business_phone       VARCHAR(20)       ,
+	email                VARCHAR(255)    NOT NULL   ,
+	password             VARCHAR(12)    NOT NULL   ,
+	nickname             VARCHAR(50)       ,
+	newsletter_subscription BOOLEAN  DEFAULT false     ,
+	internal_note        TEXT       ,
+	address_description  VARCHAR(255)       ,
+	street               VARCHAR(255)       ,
+	street_number        INT       ,
+	address_complement   VARCHAR(50)       ,
+	postal_code          CHAR(8)       ,
+	city                 VARCHAR(100)       ,
+	neighborhood         VARCHAR(100)       ,
+	state                CHAR(2)  DEFAULT 'SP'     ,
+	country              CHAR(2)  DEFAULT 'BR'     ,
+	modified_at          DATETIME       ,
+	created_at           DATETIME       ,
+	CONSTRAINT cpf UNIQUE ( cpf ) 
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE INDEX idx_customer_email ON customers ( email );
+
+CREATE  TABLE payment_methods ( 
+	payment_method_id    INT    NOT NULL AUTO_INCREMENT  PRIMARY KEY,
+	name                 VARCHAR(50)    NOT NULL   ,
+	`type`               ENUM('CREDIT_CARD','BANK_SLIP','BANK_TRANSFER','VOUCHER')    NOT NULL   ,
+	fee                  DECIMAL(5,2)  DEFAULT 0.00     ,
+	processing_days      INT  DEFAULT 0     ,
+	is_active            BOOLEAN  DEFAULT true     
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE  TABLE products ( 
+	product_id           INT    NOT NULL AUTO_INCREMENT  PRIMARY KEY,
+	name                 VARCHAR(255)    NOT NULL   ,
+	brand_id             INT    NOT NULL   ,
+	is_available         ENUM('Y','N')  DEFAULT 'Y'     ,
+	photo                VARCHAR(255)       ,
+	short_description    TEXT       ,
+	additional_description TEXT       ,
+	frequently_bought_together TEXT       ,
+	cross_sell_suggestions TEXT       ,
+	created_at           DATETIME       
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE INDEX idx_product_brand ON products ( brand_id );
+
+CREATE  TABLE subproducts ( 
+	subproduct_id        INT    NOT NULL AUTO_INCREMENT  PRIMARY KEY,
+	product_id           INT    NOT NULL   ,
+	name                 VARCHAR(255)    NOT NULL   ,
+	is_available         ENUM('Y','N')  DEFAULT 'Y'     
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE INDEX product_id ON subproducts ( product_id );
+
+CREATE  TABLE vouchers ( 
+	voucher_id           INT    NOT NULL AUTO_INCREMENT  PRIMARY KEY,
+	code                 VARCHAR(50)    NOT NULL   ,
+	`type`               ENUM('CREDIT','FIXED_DISCOUNT','PERCENTAGE_DISCOUNT','FREE_SHIPPING')    NOT NULL   ,
+	value                DECIMAL(10,2)    NOT NULL   ,
+	expiration_date      DATE       ,
+	max_usage            INT  DEFAULT 1     ,
+	customer_id          INT       ,
+	is_used              BOOLEAN  DEFAULT false     ,
+	CONSTRAINT code UNIQUE ( code ) 
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE INDEX customer_id ON vouchers ( customer_id );
+
+CREATE  TABLE customer_addresses ( 
+	customer_address_id  INT    NOT NULL AUTO_INCREMENT  PRIMARY KEY,
+	customer_id          INT    NOT NULL   ,
+	description          VARCHAR(255)    NOT NULL   ,
+	recipient            VARCHAR(255)    NOT NULL   ,
+	address_type         ENUM('delivery','billing')    NOT NULL   ,
+	street               VARCHAR(255)    NOT NULL   ,
+	street_number        INT    NOT NULL   ,
+	complement           VARCHAR(50)       ,
+	postal_code          CHAR(8)    NOT NULL   ,
+	neighborhood         VARCHAR(100)    NOT NULL   ,
+	city                 VARCHAR(100)       ,
+	state                CHAR(2)    NOT NULL   ,
+	country              CHAR(2)  DEFAULT 'BR'     
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE INDEX customer_id ON customer_addresses ( customer_id );
+
+CREATE  TABLE orders ( 
+	order_id             INT    NOT NULL AUTO_INCREMENT  PRIMARY KEY,
+	customer_id          INT    NOT NULL   ,
+	address_id           INT       ,
+	start_date           DATETIME    NOT NULL   ,
+	end_date             DATETIME       ,
+	`status`             ENUM('pending_payment','pending_shipment','pending_receipt','completed','expired','canceled')  DEFAULT 'pending_payment'     ,
+	transaction_id       VARCHAR(255)       ,
+	subtotal             DECIMAL(10,2)       ,
+	shipping_cost        DECIMAL(10,2)       ,
+	discount_amount      DECIMAL(10,2)       ,
+	payment_method_id    INT       ,
+	voucher_code         VARCHAR(50)       
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE INDEX customer_id ON orders ( customer_id );
+
+CREATE INDEX address_id ON orders ( address_id );
+
+CREATE INDEX payment_method_id ON orders ( payment_method_id );
+
+CREATE INDEX voucher_code ON orders ( voucher_code );
+
+CREATE INDEX idx_order_transaction ON orders ( transaction_id );
+
+CREATE  TABLE payment_events ( 
+	payment_event_id     INT    NOT NULL AUTO_INCREMENT  PRIMARY KEY,
+	order_id             INT    NOT NULL   ,
+	event_date           DATETIME    NOT NULL   ,
+	event_type           VARCHAR(255)    NOT NULL   ,
+	details              TEXT       ,
+	error_code           VARCHAR(50)       ,
+	amount               DECIMAL(10,2)       
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE INDEX order_id ON payment_events ( order_id );
+
+CREATE  TABLE payment_transactions ( 
+	payment_transaction_id INT    NOT NULL AUTO_INCREMENT  PRIMARY KEY,
+	order_id             INT    NOT NULL   ,
+	card_brand           VARCHAR(20)    NOT NULL   ,
+	installments         INT    NOT NULL   ,
+	authorization_code   VARCHAR(255)       ,
+	installment_value    DECIMAL(10,2)    NOT NULL   ,
+	transaction_reference VARCHAR(255)       ,
+	unique_sequence_number VARCHAR(255)       ,
+	bin_number           VARCHAR(20)       ,
+	cardholder_name      VARCHAR(255)       ,
+	processing_date      DATETIME       
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE INDEX order_id ON payment_transactions ( order_id );
+
+CREATE  TABLE product_categories ( 
+	product_id           INT    NOT NULL   ,
+	category_id          INT    NOT NULL   ,
+	CONSTRAINT pk_product_categories PRIMARY KEY ( product_id, category_id )
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE INDEX category_id ON product_categories ( category_id );
+
+CREATE  TABLE order_history ( 
+	order_history_id     INT    NOT NULL AUTO_INCREMENT  PRIMARY KEY,
+	order_id             INT    NOT NULL   ,
+	event_date           DATETIME    NOT NULL   ,
+	`status`             ENUM('pending_payment','pending_shipment','pending_receipt','completed','expired','canceled')       ,
+	description          TEXT       
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE INDEX order_id ON order_history ( order_id );
+
+CREATE  TABLE order_invoices ( 
+	order_invoice_id     INT    NOT NULL AUTO_INCREMENT  PRIMARY KEY,
+	order_id             INT    NOT NULL   ,
+	payment_method_id    INT       ,
+	issue_date           DATETIME    NOT NULL   ,
+	due_date             DATE    NOT NULL   ,
+	payment_date         DATETIME       ,
+	installment_number   INT       ,
+	amount               DECIMAL(10,2)    NOT NULL   ,
+	authentication_code  VARCHAR(255)       ,
+	is_canceled          BOOLEAN  DEFAULT false     
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE INDEX order_id ON order_invoices ( order_id );
+
+CREATE INDEX payment_method_id ON order_invoices ( payment_method_id );
+
+CREATE  TABLE order_items ( 
+	order_item_id        INT    NOT NULL AUTO_INCREMENT  PRIMARY KEY,
+	order_id             INT    NOT NULL   ,
+	product_id           INT    NOT NULL   ,
+	subproduct_id        INT    NOT NULL   ,
+	quantity             INT    NOT NULL   ,
+	needs_gift_wrapping  BOOLEAN  DEFAULT false     
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE INDEX order_id ON order_items ( order_id );
+
+CREATE INDEX product_id ON order_items ( product_id );
+
+CREATE INDEX subproduct_id ON order_items ( subproduct_id );
+
+ALTER TABLE customer_addresses ADD CONSTRAINT customer_addresses_ibfk_1 FOREIGN KEY ( customer_id ) REFERENCES customers( customer_id ) ON DELETE CASCADE ON UPDATE NO ACTION;
+
+ALTER TABLE order_history ADD CONSTRAINT order_history_ibfk_1 FOREIGN KEY ( order_id ) REFERENCES orders( order_id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE order_invoices ADD CONSTRAINT order_invoices_ibfk_1 FOREIGN KEY ( order_id ) REFERENCES orders( order_id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE order_invoices ADD CONSTRAINT order_invoices_ibfk_2 FOREIGN KEY ( payment_method_id ) REFERENCES payment_methods( payment_method_id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE order_items ADD CONSTRAINT order_items_ibfk_1 FOREIGN KEY ( order_id ) REFERENCES orders( order_id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE order_items ADD CONSTRAINT order_items_ibfk_2 FOREIGN KEY ( product_id ) REFERENCES products( product_id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE order_items ADD CONSTRAINT order_items_ibfk_3 FOREIGN KEY ( subproduct_id ) REFERENCES subproducts( subproduct_id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE orders ADD CONSTRAINT orders_ibfk_1 FOREIGN KEY ( customer_id ) REFERENCES customers( customer_id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE orders ADD CONSTRAINT orders_ibfk_2 FOREIGN KEY ( address_id ) REFERENCES customer_addresses( customer_address_id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE orders ADD CONSTRAINT orders_ibfk_3 FOREIGN KEY ( payment_method_id ) REFERENCES payment_methods( payment_method_id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE orders ADD CONSTRAINT orders_ibfk_4 FOREIGN KEY ( voucher_code ) REFERENCES vouchers( code ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE payment_events ADD CONSTRAINT payment_history_ibfk_1 FOREIGN KEY ( order_id ) REFERENCES orders( order_id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE payment_transactions ADD CONSTRAINT card_transactions_ibfk_1 FOREIGN KEY ( order_id ) REFERENCES orders( order_id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE product_categories ADD CONSTRAINT product_categories_ibfk_1 FOREIGN KEY ( product_id ) REFERENCES products( product_id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE product_categories ADD CONSTRAINT product_categories_ibfk_2 FOREIGN KEY ( category_id ) REFERENCES categories( category_id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE products ADD CONSTRAINT products_ibfk_1 FOREIGN KEY ( brand_id ) REFERENCES brands( brand_id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE subproducts ADD CONSTRAINT subproducts_ibfk_1 FOREIGN KEY ( product_id ) REFERENCES products( product_id ) ON DELETE CASCADE ON UPDATE NO ACTION;
+
+ALTER TABLE vouchers ADD CONSTRAINT vouchers_ibfk_1 FOREIGN KEY ( customer_id ) REFERENCES customers( customer_id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+]]></string>
+		</script>
+		<script name="SQL_Editor_002" id="Editor-21c6" language="SQL" >
+			<string><![CDATA[CREATE SCHEMA kurama;
+
+CREATE  TABLE brands ( 
+	brand_id             INT    NOT NULL AUTO_INCREMENT  PRIMARY KEY,
+	name                 VARCHAR(255)    NOT NULL   
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE  TABLE categories ( 
+	category_id          INT    NOT NULL AUTO_INCREMENT  PRIMARY KEY,
+	name                 VARCHAR(255)    NOT NULL   ,
+	description          TEXT       ,
+	friendly_url         VARCHAR(255)       ,
+	xml_feed             TEXT       ,
+	xml_product_list     TEXT       
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE  TABLE customers ( 
+	customer_id          INT    NOT NULL AUTO_INCREMENT  PRIMARY KEY,
+	full_name            VARCHAR(255)    NOT NULL   ,
+	document_id          VARCHAR(14)    NOT NULL   ,
+	gender               ENUM('M','F')       ,
+	birth_date           DATE    NOT NULL   ,
+	mobile_phone         VARCHAR(20)    NOT NULL   ,
+	is_mobile_phone_confirmed ENUM('yes','no')  DEFAULT 'no'     ,
+	email                VARCHAR(255)    NOT NULL   ,
+	is_email_confirmed   ENUM('yes','no')  DEFAULT 'no'     ,
+	password             VARCHAR(12)    NOT NULL   ,
+	has_newsletter_subscription ENUM('yes','no')  DEFAULT 'no'     ,
+	internal_note        TEXT       ,
+	modified_at          DATETIME       ,
+	created_at           DATETIME       ,
+	CONSTRAINT cpf UNIQUE ( document_id ) 
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE INDEX idx_customer_email ON customers ( email );
+
+CREATE  TABLE payment_methods ( 
+	payment_method_id    INT    NOT NULL AUTO_INCREMENT  PRIMARY KEY,
+	name                 VARCHAR(50)    NOT NULL   ,
+	`type`               ENUM('CREDIT_CARD','BANK_SLIP','BANK_TRANSFER','VOUCHER')    NOT NULL   ,
+	fee                  DECIMAL(5,2)  DEFAULT 0.00     ,
+	processing_days      INT  DEFAULT 0     ,
+	is_active            BOOLEAN  DEFAULT true     
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE  TABLE products ( 
+	product_id           INT    NOT NULL AUTO_INCREMENT  PRIMARY KEY,
+	name                 VARCHAR(255)    NOT NULL   ,
+	brand_id             INT    NOT NULL   ,
+	is_available         ENUM('Y','N')  DEFAULT 'Y'     ,
+	photo                VARCHAR(255)       ,
+	short_description    TEXT       ,
+	additional_description TEXT       ,
+	frequently_bought_together TEXT       ,
+	cross_sell_suggestions TEXT       ,
+	created_at           DATETIME       
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE INDEX idx_product_brand ON products ( brand_id );
+
+CREATE  TABLE vouchers ( 
+	voucher_id           INT    NOT NULL AUTO_INCREMENT  PRIMARY KEY,
+	code                 VARCHAR(50)    NOT NULL   ,
+	`type`               ENUM('CREDIT','FIXED_DISCOUNT','PERCENTAGE_DISCOUNT','FREE_SHIPPING')    NOT NULL   ,
+	value                DECIMAL(10,2)    NOT NULL   ,
+	expiration_date      DATE       ,
+	max_usage            INT  DEFAULT 1     ,
+	customer_id          INT       ,
+	is_used              BOOLEAN  DEFAULT false     ,
+	CONSTRAINT code UNIQUE ( code ) 
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE INDEX customer_id ON vouchers ( customer_id );
+
+CREATE  TABLE customer_addresses ( 
+	customer_address_id  INT    NOT NULL AUTO_INCREMENT  PRIMARY KEY,
+	customer_id          INT    NOT NULL   ,
+	is_main_address      ENUM('yes','no')  DEFAULT 'no'     ,
+	address_type         ENUM('delivery','billing')    NOT NULL   ,
+	description          VARCHAR(255)  DEFAULT 'billing'  NOT NULL   ,
+	street               VARCHAR(255)    NOT NULL   ,
+	street_number        INT    NOT NULL   ,
+	complement           VARCHAR(50)       ,
+	postal_code          CHAR(8)    NOT NULL   ,
+	neighborhood         VARCHAR(100)    NOT NULL   ,
+	city                 VARCHAR(100)       ,
+	state                CHAR(2)    NOT NULL   ,
+	country              CHAR(2)  DEFAULT 'BR'     ,
+	created_at           DATETIME    NOT NULL   ,
+	modified_at          DATETIME    NOT NULL   
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE INDEX customer_id ON customer_addresses ( customer_id );
+
+CREATE  TABLE orders ( 
+	order_id             INT    NOT NULL AUTO_INCREMENT  PRIMARY KEY,
+	customer_id          INT    NOT NULL   ,
+	address_id           INT       ,
+	start_date           DATETIME    NOT NULL   ,
+	end_date             DATETIME       ,
+	`status`             ENUM('pending_payment','pending_shipment','pending_receipt','completed','expired','canceled')  DEFAULT 'pending_payment'     ,
+	transaction_id       VARCHAR(255)       ,
+	subtotal             DECIMAL(10,2)       ,
+	shipping_cost        DECIMAL(10,2)       ,
+	discount_amount      DECIMAL(10,2)       ,
+	payment_method_id    INT       ,
+	voucher_code         VARCHAR(50)       
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE INDEX customer_id ON orders ( customer_id );
+
+CREATE INDEX address_id ON orders ( address_id );
+
+CREATE INDEX payment_method_id ON orders ( payment_method_id );
+
+CREATE INDEX voucher_code ON orders ( voucher_code );
+
+CREATE INDEX idx_order_transaction ON orders ( transaction_id );
+
+CREATE  TABLE payment_events ( 
+	payment_event_id     INT    NOT NULL AUTO_INCREMENT  PRIMARY KEY,
+	order_id             INT    NOT NULL   ,
+	event_date           DATETIME    NOT NULL   ,
+	event_type           VARCHAR(255)    NOT NULL   ,
+	details              TEXT       ,
+	error_code           VARCHAR(50)       ,
+	amount               DECIMAL(10,2)       
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE INDEX order_id ON payment_events ( order_id );
+
+CREATE  TABLE payment_transactions ( 
+	payment_transaction_id INT    NOT NULL AUTO_INCREMENT  PRIMARY KEY,
+	order_id             INT    NOT NULL   ,
+	card_brand           VARCHAR(20)    NOT NULL   ,
+	installments         INT    NOT NULL   ,
+	authorization_code   VARCHAR(255)       ,
+	installment_value    DECIMAL(10,2)    NOT NULL   ,
+	transaction_reference VARCHAR(255)       ,
+	unique_sequence_number VARCHAR(255)       ,
+	bin_number           VARCHAR(20)       ,
+	cardholder_name      VARCHAR(255)       ,
+	processing_date      DATETIME       
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE INDEX order_id ON payment_transactions ( order_id );
+
+CREATE  TABLE product_categories ( 
+	product_id           INT    NOT NULL   ,
+	category_id          INT    NOT NULL   ,
+	CONSTRAINT pk_product_categories PRIMARY KEY ( product_id, category_id )
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE INDEX category_id ON product_categories ( category_id );
+
+CREATE  TABLE product_items ( 
+	product_item_id      INT    NOT NULL AUTO_INCREMENT  PRIMARY KEY,
+	product_id           INT    NOT NULL   ,
+	name                 VARCHAR(255)    NOT NULL   ,
+	is_available         ENUM('Y','N')  DEFAULT 'Y'     
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE INDEX product_id ON product_items ( product_id );
+
+CREATE  TABLE order_history ( 
+	order_history_id     INT    NOT NULL AUTO_INCREMENT  PRIMARY KEY,
+	order_id             INT    NOT NULL   ,
+	event_date           DATETIME    NOT NULL   ,
+	`status`             ENUM('pending_payment','pending_shipment','pending_receipt','completed','expired','canceled')       ,
+	description          TEXT       
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE INDEX order_id ON order_history ( order_id );
+
+CREATE  TABLE order_invoices ( 
+	order_invoice_id     INT    NOT NULL AUTO_INCREMENT  PRIMARY KEY,
+	order_id             INT    NOT NULL   ,
+	payment_method_id    INT       ,
+	issue_date           DATETIME    NOT NULL   ,
+	due_date             DATE    NOT NULL   ,
+	payment_date         DATETIME       ,
+	installment_number   INT       ,
+	amount               DECIMAL(10,2)    NOT NULL   ,
+	authentication_code  VARCHAR(255)       ,
+	is_canceled          BOOLEAN  DEFAULT false     
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE INDEX order_id ON order_invoices ( order_id );
+
+CREATE INDEX payment_method_id ON order_invoices ( payment_method_id );
+
+CREATE  TABLE order_items ( 
+	order_item_id        INT    NOT NULL AUTO_INCREMENT  PRIMARY KEY,
+	order_id             INT    NOT NULL   ,
+	product_id           INT    NOT NULL   ,
+	subproduct_id        INT    NOT NULL   ,
+	quantity             INT    NOT NULL   ,
+	needs_gift_wrapping  BOOLEAN  DEFAULT false     
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE INDEX order_id ON order_items ( order_id );
+
+CREATE INDEX product_id ON order_items ( product_id );
+
+CREATE INDEX subproduct_id ON order_items ( subproduct_id );
+
+ALTER TABLE customer_addresses ADD CONSTRAINT customer_addresses_ibfk_1 FOREIGN KEY ( customer_id ) REFERENCES customers( customer_id ) ON DELETE CASCADE ON UPDATE NO ACTION;
+
+ALTER TABLE order_history ADD CONSTRAINT order_history_ibfk_1 FOREIGN KEY ( order_id ) REFERENCES orders( order_id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE order_invoices ADD CONSTRAINT order_invoices_ibfk_1 FOREIGN KEY ( order_id ) REFERENCES orders( order_id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE order_invoices ADD CONSTRAINT order_invoices_ibfk_2 FOREIGN KEY ( payment_method_id ) REFERENCES payment_methods( payment_method_id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE order_items ADD CONSTRAINT order_items_ibfk_1 FOREIGN KEY ( order_id ) REFERENCES orders( order_id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE order_items ADD CONSTRAINT order_items_ibfk_2 FOREIGN KEY ( product_id ) REFERENCES products( product_id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE order_items ADD CONSTRAINT order_items_ibfk_3 FOREIGN KEY ( subproduct_id ) REFERENCES product_items( product_item_id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE orders ADD CONSTRAINT orders_ibfk_1 FOREIGN KEY ( customer_id ) REFERENCES customers( customer_id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE orders ADD CONSTRAINT orders_ibfk_2 FOREIGN KEY ( address_id ) REFERENCES customer_addresses( customer_address_id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE orders ADD CONSTRAINT orders_ibfk_3 FOREIGN KEY ( payment_method_id ) REFERENCES payment_methods( payment_method_id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE orders ADD CONSTRAINT orders_ibfk_4 FOREIGN KEY ( voucher_code ) REFERENCES vouchers( code ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE payment_events ADD CONSTRAINT payment_history_ibfk_1 FOREIGN KEY ( order_id ) REFERENCES orders( order_id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE payment_transactions ADD CONSTRAINT card_transactions_ibfk_1 FOREIGN KEY ( order_id ) REFERENCES orders( order_id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE product_categories ADD CONSTRAINT product_categories_ibfk_1 FOREIGN KEY ( product_id ) REFERENCES products( product_id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE product_categories ADD CONSTRAINT product_categories_ibfk_2 FOREIGN KEY ( category_id ) REFERENCES categories( category_id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE product_items ADD CONSTRAINT subproducts_ibfk_1 FOREIGN KEY ( product_id ) REFERENCES products( product_id ) ON DELETE CASCADE ON UPDATE NO ACTION;
+
+ALTER TABLE products ADD CONSTRAINT products_ibfk_1 FOREIGN KEY ( brand_id ) REFERENCES brands( brand_id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE vouchers ADD CONSTRAINT vouchers_ibfk_1 FOREIGN KEY ( customer_id ) REFERENCES customers( customer_id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+]]></string>
+		</script>
+	</layout>
+	<layout name="~Diagram with Sample Tools" id="Diagram-262e" show_column_type="y" show_relation="columns" >
+		<entity schema="kurama" name="categories" color="BED3F4" x="1768" y="527" />
+		<entity schema="kurama" name="customer_addresses" color="C7F4BE" x="1122" y="306" />
+		<entity schema="kurama" name="customers" color="C7F4BE" x="765" y="306" />
+		<entity schema="kurama" name="order_history" color="C7F4BE" x="102" y="85" />
+		<entity schema="kurama" name="order_invoices" color="C7F4BE" x="85" y="646" />
+		<entity schema="kurama" name="order_tickets" color="BED3F4" x="2091" y="51" />
+		<entity schema="kurama" name="orders" color="C7F4BE" x="425" y="306" />
+		<entity schema="kurama" name="payment_events" color="C7F4BE" x="425" y="51" />
+		<entity schema="kurama" name="payment_methods" color="C7F4BE" x="425" y="646" />
+		<entity schema="kurama" name="payment_transactions" color="C7F4BE" x="51" y="323" />
+		<entity schema="kurama" name="product_items" color="BED3F4" x="2091" y="357" />
+		<entity schema="kurama" name="products" color="BED3F4" x="1768" y="51" />
+		<entity schema="kurama" name="trips" color="BED3F4" x="1496" y="357" />
+		<entity schema="kurama" name="vouchers" color="C7F4BE" x="1122" y="833" />
+		<script name="SQL Editor" id="Editor-17b0" language="SQL" >
+			<string><![CDATA[SELECT
+	order_id, customer_id, address_id, start_date, end_date, `status`, transaction_id, subtotal, shipping_cost, discount_amount, 
+	payment_method_id, voucher_code
+FROM
+	kurama.orders s;]]></string>
+		</script>
+		<browser id="Browse-11d8" name="Relational Data Editor" confirm_updates="y" >
+			<browse_table schema="kurama" entity="orders" fk_out="n" x="20" y="20" width="270" height="-60" >
+				<browse_table schema="kurama" entity="payment_transactions" fk="card_transactions_ibfk_1" fk_out="y" x="310" y="20" width="500" height="350" />
+			</browse_table>
+		</browser>
+	</layout>
+</project>
