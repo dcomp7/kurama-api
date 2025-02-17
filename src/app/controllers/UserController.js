@@ -30,16 +30,16 @@ class UserController {
     if (createdAfter)
       where = { ...where, created_at: { [Op.gte]: parseISO(createdAfter) } };
     if (updatedBefore)
-      where = { ...where, updated_at: { [Op.lte]: parseISO(updatedBefore) } };
+      where = { ...where, modified_at: { [Op.lte]: parseISO(updatedBefore) } };
     if (updatedAfter)
-      where = { ...where, updated_at: { [Op.gte]: parseISO(updatedAfter) } };
+      where = { ...where, modified_at: { [Op.gte]: parseISO(updatedAfter) } };
 
     if (sort) {
       order = sort.split(",").map((item) => item.split(":"));
     }
 
     const data = await User.findAll({
-      attributes: { exclude: ["password", "password_hash"] },
+      attributes: { exclude: ["password_hash"] },
       where,
       order,
       limit,
@@ -51,9 +51,9 @@ class UserController {
 
   async show(req, res) {
     try {
-      const { id } = req.params;
-      const user = await User.findByPk(id, {
-        attributes: { exclude: ["password", "password_hash"] },
+      const { user_id } = req.params;
+      const user = await User.findByPk(user_id, {
+        attributes: { exclude: ["password_hash"] },
       });
 
       if (user) {
@@ -88,14 +88,14 @@ class UserController {
           .json({ error: "Validation fails", messages: err.errors });
       }
 
-      const { id, name, email, fileId, createdAt, updatedAt } =
+      const { user_id, name, email, created_at, modified_at } =
         await User.create(req.body);
 
       await Queue.add(WelcomeEmailJob.key, { email, name });
 
       return res
         .status(201)
-        .json({ id, name, email, fileId, createdAt, updatedAt });
+        .json({ user_id, name, email, created_at, modified_at });
     } catch (error) {
       console.log(error);
       return res.status(500).json({ error: "Internal server error" });
@@ -128,22 +128,18 @@ class UserController {
       try {
         await schema.validate(req.body, { abortEarly: false });
       } catch (err) {
-        //console.log("erro");
-        //console.log(err);
         return res
           .status(400)
           .json({ error: "Validation fails", messages: err.inner });
       }
 
-      const { id } = req.params;
+      const { user_id } = req.params;
 
-      // Procura o id do usuário a ser editado
-      const user = await User.findByPk(id);
+      const user = await User.findByPk(user_id);
       if (!user) {
         return res.status(404).json({ error: "User not found" });
       }
 
-      // Checa password
       const { oldPassword } = req.body;
       if (oldPassword && !(await user.checkPassword(oldPassword))) {
         return res.status(401).json({ error: "Password does not match" });
@@ -151,11 +147,11 @@ class UserController {
 
       user.set(req.body);
 
-      const { name, email, fileId, createdAt, updatedAt } = await user.save();
+      const { name, email, created_at, modified_at } = await user.save();
 
       return res
         .status(201)
-        .json({ id, name, email, fileId, createdAt, updatedAt });
+        .json({ user_id, name, email, created_at, modified_at });
     } catch (error) {
       console.error(error);
       return res.status(500).json({ error: "Internal server error" });
@@ -164,9 +160,9 @@ class UserController {
 
   async delete(req, res) {
     try {
-      const { id } = req.params;
+      const { user_id } = req.params;
 
-      const user = await User.findByPk(id);
+      const user = await User.findByPk(user_id);
 
       if (!user) {
         return res.status(404).json({ error: "User not found" });

@@ -7,20 +7,31 @@ class User extends Model {
   static init(sequelize) {
     super.init(
       {
+        user_id: {
+          type: Sequelize.INTEGER,
+          primaryKey: true,
+          autoIncrement: true,
+        },
         name: Sequelize.STRING,
         email: {
           type: Sequelize.STRING,
           allowNull: false,
           unique: true,
         },
-        fileId: Sequelize.STRING,
         password: Sequelize.VIRTUAL,
         password_hash: Sequelize.STRING,
+        is_active: {
+          type: Sequelize.ENUM("yes", "no"),
+          allowNull: false,
+          defaultValue: "yes",
+        },
       },
       {
         sequelize,
         tableName: "users",
         underscored: true,
+        createdAt: "created_at",
+        updatedAt: "modified_at",
       },
     );
 

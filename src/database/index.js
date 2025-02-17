@@ -4,8 +4,7 @@ import config from "../config/database";
 import User from "../app/models/User";
 
 const models = [User];
-const env = process.env.NODE_ENV || "development";
-const sequelizeConfig = config[env];
+const sequelizeConfig = config;
 
 class Database {
   constructor() {
