@@ -87,12 +87,11 @@ class CustomerController {
           .json({ error: "Validation fails", messages: err.errors });
       }
 
-      const { customerId, full_name, email, created_at, modified_at } =
-        await Customer.create(req.body);
+      const customer = await Customer.create(req.body);
+      let customerJSON = customer.toJSON();
+      delete customerJSON.password_hash;
 
-      return res
-        .status(201)
-        .json({ customerId, full_name, email, created_at, modified_at });
+      return res.status(201).json(customerJSON);
     } catch (error) {
       console.log(error);
       return res.status(500).json({ error: "Internal server error" });
@@ -144,12 +143,12 @@ class CustomerController {
 
       customer.set(req.body);
 
-      const { full_name, email, created_at, modified_at } =
-        await customer.save();
+      await customer.save();
 
-      return res
-        .status(201)
-        .json({ customerId, full_name, email, created_at, modified_at });
+      let customerJSON = customer.toJSON();
+      delete customerJSON.password_hash;
+
+      return res.status(201).json(customerJSON);
     } catch (error) {
       console.error(error);
       return res.status(500).json({ error: "Internal server error" });

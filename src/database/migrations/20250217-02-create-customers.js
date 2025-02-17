@@ -19,11 +19,11 @@ module.exports = {
         unique: true,
       },
       gender: {
-        type: Sequelize.ENUM("M", "F"),
+        type: Sequelize.ENUM("male", "female", "other"),
         allowNull: true,
       },
       birth_date: {
-        type: Sequelize.DATE,
+        type: Sequelize.DATEONLY,
         allowNull: false,
       },
       mobile_phone: {

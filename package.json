@@ -41,6 +41,7 @@
   "scripts": {
     "dev": "nodemon ./src/server.js",
     "queue": "nodemon ./src/queue.js",
-    "migrate": "sequelize db:migrate"
+    "migrate": "sequelize db:migrate && sequelize db:seed:all",
+    "migrate:undo": "sequelize db:migrate:undo:all"
   }
 }
