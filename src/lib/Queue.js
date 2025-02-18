@@ -38,6 +38,12 @@ class Queue {
     });
   }
 
+  async closeQueues() {
+    await Promise.all(
+      Object.values(this.queues).map((queue) => queue.bee.close()),
+    );
+  }
+
   handleFailure(job) {
     // eslint-disable-next-line no-console
     console.log(`Queue ${job.queue.name}: FAILED`);
