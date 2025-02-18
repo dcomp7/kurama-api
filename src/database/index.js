@@ -14,6 +14,10 @@ class Database {
     this.init();
   }
 
+  getConnection() {
+    return this.connection;
+  }
+
   init() {
     models.forEach((model) => model.init(this.connection));
     models.forEach(
@@ -22,4 +26,4 @@ class Database {
   }
 }
 
-export default new Database();
+export default new Database().connection;
