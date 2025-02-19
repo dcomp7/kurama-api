@@ -51,8 +51,8 @@ class UserController {
 
   async show(req, res) {
     try {
-      const { user_id } = req.params;
-      const user = await User.findByPk(user_id, {
+      const { userId } = req.params;
+      const user = await User.findByPk(userId, {
         attributes: { exclude: ["password_hash"] },
       });
 
@@ -133,9 +133,9 @@ class UserController {
           .json({ error: "Validation fails", messages: err.inner });
       }
 
-      const { user_id } = req.params;
+      const { userId } = req.params;
 
-      const user = await User.findByPk(user_id);
+      const user = await User.findByPk(userId);
       if (!user) {
         return res.status(404).json({ error: "User not found" });
       }
@@ -151,7 +151,7 @@ class UserController {
 
       return res
         .status(201)
-        .json({ user_id, name, email, created_at, modified_at });
+        .json({ userId, name, email, created_at, modified_at });
     } catch (error) {
       console.error(error);
       return res.status(500).json({ error: "Internal server error" });
@@ -160,9 +160,9 @@ class UserController {
 
   async delete(req, res) {
     try {
-      const { user_id } = req.params;
+      const { userId } = req.params;
 
-      const user = await User.findByPk(user_id);
+      const user = await User.findByPk(userId);
 
       if (!user) {
         return res.status(404).json({ error: "User not found" });

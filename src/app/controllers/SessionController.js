@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken";
 import * as Yup from "yup";
 import User from "../models/User.js";
 import authConfig from "../../config/auth.js";
+import Customer from "../models/Customer.js";
 
 class SessionController {
   async create(req, res) {
@@ -22,31 +23,45 @@ class SessionController {
     const { type, email, password } = req.body;
 
     let user;
+    let customer;
+    const output = {
+      type: type,
+      userId: 0,
+      customerId: 0,
+      name: "",
+      email: "",
+    };
 
     if (type === "user") {
       user = await User.findOne({ where: { email } });
-    }
+      if (!user) {
+        return res.status(401).json({ error: "User not found" });
+      }
 
-    if (!user) {
-      return res.status(401).json({ error: "User not found" });
-    }
+      if (!(await user.checkPassword(password))) {
+        return res.status(401).json({ error: "Password does not match" });
+      }
 
-    if (!(await user.checkPassword(password))) {
-      return res.status(401).json({ error: "Password does not match" });
-    }
+      output.userId = user.user_id;
+      output.name = user.full_name;
+      output.email = user.email;
+    } else if (type === "customer") {
+      customer = await Customer.findOne({ where: { email } });
+      if (!customer) {
+        return res.status(401).json({ error: "User not found" });
+      }
 
-    const output = {
-      type: type,
-      userId: type === "user" ? user.user_id : null,
-      customerId: type === "customer" ? user.customer_id : null,
-    };
+      if (!(await customer.checkPassword(password))) {
+        return res.status(401).json({ error: "Password does not match" });
+      }
+
+      output.customerId = customer.customer_id;
+      output.name = customer.full_name;
+      output.email = customer.email;
+    }
 
     return res.json({
-      data: {
-        ...output,
-        name: user.name,
-        email: user.email,
-      },
+      data: output,
       token: jwt.sign(output, authConfig.secret, {
         expiresIn: authConfig.expiresIn,
       }),

@@ -29,7 +29,6 @@ beforeAll(() => {
   Queue.processQueue();
 });
 
-// Add a cleanup function to close the queues when tests are done
 afterAll(() => {
   Queue.closeQueues();
   sequelize.close();
