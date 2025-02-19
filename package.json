@@ -1,8 +1,8 @@
 {
   "name": "kurama-api",
   "version": "1.0.0",
-  "main": "src/app/Models/index.js",
-  "license": "MIT",
+  "main": "src/app/models/index.js",
+  "license": "LicenseRef-Proprietary",
   "dependencies": {
     "@sentry/node": "^9.0.1",
     "@sentry/profiling-node": "^9.0.1",
