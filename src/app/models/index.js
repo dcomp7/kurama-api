@@ -1,5 +1,5 @@
-import User from "./User";
-import Customer from "./Customer";
-import CustomerAddress from "./CustomerAddress";
+import User from "./User.js";
+import Customer from "./Customer.js";
+import CustomerAddress from "./CustomerAddress.js";
 
-export { User, Customer, CustomerAddress };
+export default [User, Customer, CustomerAddress];

@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "main": "src/app/models/index.js",
   "license": "LicenseRef-Proprietary",
+  "type": "module",
   "dependencies": {
     "@sentry/node": "^9.0.1",
     "@sentry/profiling-node": "^9.0.1",
