@@ -1,16 +1,18 @@
 "use strict";
 
+const { DataTypes, Sequelize } = require("sequelize");
+
 module.exports = {
-  up(queryInterface, Sequelize) {
+  up: (queryInterface) => {
     return queryInterface.createTable("customer_addresses", {
       customer_address_id: {
-        type: Sequelize.INTEGER,
+        type: DataTypes.INTEGER,
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
       },
       customer_id: {
-        type: Sequelize.INTEGER,
+        type: DataTypes.INTEGER,
         allowNull: false,
         references: {
           model: "customers",
@@ -20,63 +22,63 @@ module.exports = {
         onDelete: "CASCADE",
       },
       is_main_address: {
-        type: Sequelize.ENUM("yes", "no"),
+        type: DataTypes.ENUM("yes", "no"),
         defaultValue: "no",
       },
       address_type: {
-        type: Sequelize.ENUM("delivery", "billing"),
+        type: DataTypes.ENUM("delivery", "billing"),
         allowNull: false,
       },
       description: {
-        type: Sequelize.STRING(255),
+        type: DataTypes.STRING(255),
         allowNull: false,
         defaultValue: "billing",
       },
       street: {
-        type: Sequelize.STRING(255),
+        type: DataTypes.STRING(255),
         allowNull: false,
       },
       street_number: {
-        type: Sequelize.INTEGER,
+        type: DataTypes.INTEGER,
         allowNull: false,
       },
       complement: {
-        type: Sequelize.STRING(50),
+        type: DataTypes.STRING(50),
         allowNull: true,
       },
       postal_code: {
-        type: Sequelize.CHAR(8),
+        type: DataTypes.CHAR(8),
         allowNull: false,
       },
       neighborhood: {
-        type: Sequelize.STRING(100),
+        type: DataTypes.STRING(100),
         allowNull: false,
       },
       city: {
-        type: Sequelize.STRING(100),
+        type: DataTypes.STRING(100),
         allowNull: true,
       },
       state: {
-        type: Sequelize.CHAR(2),
+        type: DataTypes.CHAR(2),
         allowNull: false,
       },
       country: {
-        type: Sequelize.CHAR(2),
+        type: DataTypes.CHAR(2),
         allowNull: false,
         defaultValue: "BR",
       },
       is_active: {
-        type: Sequelize.ENUM("yes", "no"),
+        type: DataTypes.ENUM("yes", "no"),
         allowNull: false,
         defaultValue: "yes",
       },
       created_at: {
-        type: Sequelize.DATE,
+        type: DataTypes.DATE,
         allowNull: false,
         defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
       },
       modified_at: {
-        type: Sequelize.DATE,
+        type: DataTypes.DATE,
         allowNull: false,
         defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
         onUpdate: Sequelize.literal("CURRENT_TIMESTAMP"),
@@ -84,7 +86,7 @@ module.exports = {
     });
   },
 
-  down(queryInterface) {
+  down: (queryInterface) => {
     return queryInterface.dropTable("customer_addresses");
   },
 };
