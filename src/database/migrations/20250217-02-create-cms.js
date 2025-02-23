@@ -2,30 +2,39 @@
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable("users", {
-      user_id: {
-        type: Sequelize.INTEGER,
+    return queryInterface.createTable("cms", {
+      cms_id: {
+        type: Sequelize.INTEGER.UNSIGNED,
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
       },
-      name: {
-        type: Sequelize.STRING(255),
+      title: {
+        type: Sequelize.STRING(200),
         allowNull: false,
       },
-      email: {
-        type: Sequelize.STRING(255),
+      key: {
+        type: Sequelize.STRING(200),
         allowNull: false,
         unique: true,
       },
-      password_hash: {
-        type: Sequelize.STRING(255),
+      content: {
+        type: Sequelize.TEXT,
         allowNull: false,
       },
-      role: {
-        type: Sequelize.ENUM("admin", "manager", "user"),
+      status: {
+        type: Sequelize.ENUM("pending", "archived", "published"),
         allowNull: false,
-        defaultValue: "user",
+        defaultValue: "pending",
+      },
+      created_by: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: "users",
+          key: "user_id",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "SET NULL",
       },
       is_active: {
         type: Sequelize.ENUM("yes", "no"),
@@ -47,6 +56,6 @@ module.exports = {
   },
 
   down: (queryInterface) => {
-    return queryInterface.dropTable("users");
+    return queryInterface.dropTable("cms");
   },
 };

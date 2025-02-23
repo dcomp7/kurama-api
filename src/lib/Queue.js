@@ -1,6 +1,6 @@
 import Bee from "bee-queue";
 import redisConfig from "../config/redis.js";
-import * as jobs from "../app/jobs";
+import * as jobs from "../app/jobs/index.js";
 
 class Queue {
   constructor() {

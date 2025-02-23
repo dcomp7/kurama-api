@@ -1,9 +1,9 @@
-import User from "../models/User";
+import User from "../models/User.js";
 import { Op } from "sequelize";
 import { parseISO } from "date-fns";
 import * as Yup from "yup";
-import Queue from "../../lib/Queue";
-import { WelcomeEmailJob } from "../jobs";
+import Queue from "../../lib/Queue.js";
+import { WelcomeEmailJob } from "../jobs/index.js";
 
 class UserController {
   async index(req, res) {
@@ -77,6 +77,7 @@ class UserController {
           (password, field) =>
             password ? field.required().oneOf([Yup.ref("password")]) : field,
         ),
+        role: Yup.string().oneOf(["admin", "manager", "user"]).required(),
       });
 
       try {
@@ -88,14 +89,20 @@ class UserController {
           .json({ error: "Validation fails", messages: err.errors });
       }
 
-      const { user_id, name, email, created_at, modified_at } =
+      const { user_id, name, email, role, is_active, created_at, modified_at } =
         await User.create(req.body);
 
       await Queue.add(WelcomeEmailJob.key, { email, name });
 
-      return res
-        .status(201)
-        .json({ user_id, name, email, created_at, modified_at });
+      return res.status(201).json({
+        user_id,
+        name,
+        email,
+        role,
+        is_active,
+        created_at,
+        modified_at,
+      });
     } catch (error) {
       console.log(error);
       return res.status(500).json({ error: "Internal server error" });
@@ -123,6 +130,7 @@ class UserController {
               .oneOf([Yup.ref("password")], "Passwords must match"),
           otherwise: (schema) => schema.notRequired(),
         }),
+        role: Yup.string().oneOf(["admin", "manager", "user"]),
       });
 
       try {
@@ -147,11 +155,18 @@ class UserController {
 
       user.set(req.body);
 
-      const { name, email, created_at, modified_at } = await user.save();
+      const { name, email, role, is_active, created_at, modified_at } =
+        await user.save();
 
-      return res
-        .status(201)
-        .json({ userId, name, email, created_at, modified_at });
+      return res.status(201).json({
+        userId,
+        name,
+        email,
+        role,
+        is_active,
+        created_at,
+        modified_at,
+      });
     } catch (error) {
       console.error(error);
       return res.status(500).json({ error: "Internal server error" });

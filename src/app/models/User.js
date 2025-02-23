@@ -12,7 +12,10 @@ class User extends Model {
           primaryKey: true,
           autoIncrement: true,
         },
-        name: Sequelize.STRING,
+        name: {
+          type: Sequelize.STRING,
+          allowNull: false,
+        },
         email: {
           type: Sequelize.STRING,
           allowNull: false,
@@ -20,6 +23,11 @@ class User extends Model {
         },
         password: Sequelize.VIRTUAL,
         password_hash: Sequelize.STRING,
+        role: {
+          type: Sequelize.ENUM("admin", "manager", "user"),
+          allowNull: false,
+          defaultValue: "user",
+        },
         is_active: {
           type: Sequelize.ENUM("yes", "no"),
           allowNull: false,
@@ -48,7 +56,9 @@ class User extends Model {
     return bcrypt.compare(password, this.password_hash);
   }
 
-  static associate() {}
+  static associate(models) {
+    //this.hasMany(models.Cms, { foreignKey: "created_by", as: "cms" });
+  }
 }
 
 export default User;

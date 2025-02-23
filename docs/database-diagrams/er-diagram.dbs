@@ -24,6 +24,40 @@
 			</index>
 			<options><![CDATA[ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci]]></options>
 		</table>
+		<table name="cms" prior="tbl" >
+			<column name="cms_id" type="INT" jt="4" mandatory="y" unsigned="y" >
+				<identity><![CDATA[AUTO_INCREMENT ]]></identity>
+			</column>
+			<column name="title" prior="name" type="VARCHAR" length="200" jt="12" mandatory="y" />
+			<column name="key" type="VARCHAR" length="200" jt="12" mandatory="y" />
+			<column name="content" type="TEXT" length="9999999" jt="-1" mandatory="y" />
+			<column name="status" type="ENUM" jt="12" mandatory="y" >
+				<defo><![CDATA['pending']]></defo>
+				<enumeration><![CDATA['pending','archived','published']]></enumeration>
+			</column>
+			<column name="created_by" type="INT" jt="4" />
+			<column name="is_active" type="ENUM" jt="12" mandatory="y" >
+				<defo><![CDATA['yes']]></defo>
+				<enumeration><![CDATA['yes','no']]></enumeration>
+			</column>
+			<column name="created_at" type="DATETIME" length="9999999" jt="93" >
+				<defo><![CDATA[CURRENT_TIMESTAMP]]></defo>
+			</column>
+			<column name="modified_at" type="DATETIME" length="9999999" jt="93" >
+				<defo><![CDATA[CURRENT_TIMESTAMP]]></defo>
+				<column_options><![CDATA[ON UPDATE CURRENT_TIMESTAMP]]></column_options>
+			</column>
+			<index name="pk_cms" unique="PRIMARY_KEY" >
+				<column name="cms_id" />
+			</index>
+			<index name="unq_cms" unique="UNIQUE_KEY" >
+				<column name="key" />
+			</index>
+			<fk name="fk_cms_users" to_schema="kurama" to_table="users" >
+				<fk_column name="created_by" pk="user_id" />
+			</fk>
+			<options><![CDATA[engine=InnoDB]]></options>
+		</table>
 		<table name="customer_addresses" row_count="0" spec="" >
 			<column name="customer_address_id" type="INT" length="11" jt="4" mandatory="y" >
 				<identity><![CDATA[AUTO_INCREMENT]]></identity>
@@ -628,6 +662,10 @@
 			<column name="name" type="VARCHAR" length="255" jt="12" mandatory="y" />
 			<column name="email" type="VARCHAR" length="255" jt="12" mandatory="y" />
 			<column name="password_hash" type="VARCHAR" length="255" jt="12" mandatory="y" />
+			<column name="role" type="ENUM" jt="12" >
+				<defo><![CDATA['user']]></defo>
+				<enumeration><![CDATA['admin','manager','user']]></enumeration>
+			</column>
 			<column name="is_active" type="ENUM" jt="12" mandatory="y" >
 				<defo><![CDATA['yes']]></defo>
 				<enumeration><![CDATA['yes','no']]></enumeration>
@@ -692,6 +730,7 @@
 	<layout name="Main Diagram" id="Diagram-720" show_relation="columns" >
 		<comment><![CDATA[ER Diagram]]></comment>
 		<entity schema="kurama" name="categories" color="BED3F4" x="289" y="1173" />
+		<entity schema="kurama" name="cms" color="C1D8EE" x="714" y="935" />
 		<entity schema="kurama" name="customer_addresses" color="C7F4BE" x="697" y="102" />
 		<entity schema="kurama" name="customer_reviews" color="C7F4BE" x="697" y="459" />
 		<entity schema="kurama" name="customers" color="C7F4BE" x="408" y="102" />
@@ -716,6 +755,7 @@
 			<entity schema="kurama" name="categories" />
 			<entity schema="kurama" name="products" />
 			<entity schema="kurama" name="product_items" />
+			<entity schema="kurama" name="cms" />
 		</group>
 		<group name="Customer" color="00FF00" >
 			<entity schema="kurama" name="customers" />

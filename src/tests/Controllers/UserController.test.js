@@ -40,6 +40,7 @@ describe("UserController", () => {
       .send({
         name: "New User",
         email: "newuser@example.com",
+        role: "admin",
         password: "password123",
         passwordConfirmation: "password123",
       });

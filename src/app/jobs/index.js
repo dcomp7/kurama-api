@@ -1,1 +1,1 @@
-export { default as WelcomeEmailJob } from "./WelcomeEmailJob";
+export { default as WelcomeEmailJob } from "./WelcomeEmailJob.js";

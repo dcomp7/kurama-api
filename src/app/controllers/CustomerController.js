@@ -1,4 +1,4 @@
-import Customer from "../models/Customer";
+import Customer from "../models/Customer.js";
 import { Op } from "sequelize";
 import { parseISO } from "date-fns";
 import * as Yup from "yup";

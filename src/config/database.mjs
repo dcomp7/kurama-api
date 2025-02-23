@@ -1,8 +1,12 @@
 import dotenv from "dotenv";
 import path from "path";
+import { fileURLToPath } from "url";
+import { dirname } from "path";
+
+const __dirname = path.resolve();
 
 if (process.env.NODE_ENV === "test") {
-  dotenv.config({ path: path.resolve(__dirname, "..", "..", ".env.test") });
+  dotenv.config({ path: path.resolve(__dirname, ".env.test") });
 } else {
   dotenv.config();
 }
