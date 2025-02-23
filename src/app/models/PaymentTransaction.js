@@ -11,19 +11,50 @@ class PaymentTransaction extends Model {
           primaryKey: true,
           autoIncrement: true,
         },
-        order_id: Sequelize.INTEGER,
-        order_invoice_id: Sequelize.INTEGER,
-        card_brand: Sequelize.STRING,
-        installments: Sequelize.INTEGER,
-        authorization_code: Sequelize.STRING,
-        installment_value: Sequelize.DECIMAL(10, 2),
-        transaction_reference: Sequelize.STRING,
-        unique_sequence_number: Sequelize.STRING,
-        cardholder_name: Sequelize.STRING,
-        processing_date: Sequelize.DATE,
+        order_id: {
+          type: Sequelize.INTEGER,
+          allowNull: false,
+        },
+        order_invoice_id: {
+          type: Sequelize.INTEGER,
+          allowNull: true,
+        },
+        card_brand: {
+          type: Sequelize.STRING(20),
+          allowNull: false,
+        },
+        installments: {
+          type: Sequelize.INTEGER,
+          allowNull: false,
+        },
+        authorization_code: {
+          type: Sequelize.STRING(255),
+          allowNull: true,
+        },
+        installment_value: {
+          type: Sequelize.DECIMAL(10, 2),
+          allowNull: false,
+        },
+        transaction_reference: {
+          type: Sequelize.STRING(255),
+          allowNull: true,
+        },
+        unique_sequence_number: {
+          type: Sequelize.STRING(255),
+          allowNull: true,
+        },
+        cardholder_name: {
+          type: Sequelize.STRING(255),
+          allowNull: true,
+        },
+        processing_date: {
+          type: Sequelize.DATE,
+          allowNull: true,
+        },
         is_active: {
           type: Sequelize.ENUM("yes", "no"),
           defaultValue: "yes",
+          allowNull: false,
         },
       },
       {
@@ -38,12 +69,14 @@ class PaymentTransaction extends Model {
     return this;
   }
 
-  static associate(models) {
+  static associate() {
+    /*
     this.belongsTo(models.Order, { foreignKey: "order_id", as: "order" });
     this.belongsTo(models.OrderInvoice, {
       foreignKey: "order_invoice_id",
       as: "order_invoice",
     });
+    */
   }
 }
 

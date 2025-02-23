@@ -43,7 +43,8 @@ class Order extends Model {
     return this;
   }
 
-  static associate(models) {
+  static associate() {
+    /*
     this.belongsTo(models.Customer, {
       foreignKey: "customer_id",
       as: "customer",
@@ -59,7 +60,7 @@ class Order extends Model {
     this.belongsTo(models.Voucher, {
       foreignKey: "voucher_code",
       as: "voucher",
-    });
+    });*/
   }
 }
 

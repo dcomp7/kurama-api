@@ -696,15 +696,15 @@
 		<entity schema="kurama" name="customer_reviews" color="C7F4BE" x="697" y="459" />
 		<entity schema="kurama" name="customers" color="C7F4BE" x="408" y="102" />
 		<entity schema="kurama" name="medias" color="3986C1" x="85" y="1071" />
-		<entity schema="kurama" name="order_history" color="F4F3BE" x="1513" y="85" />
-		<entity schema="kurama" name="order_invoices" color="F4F3BE" x="1547" y="391" />
-		<entity schema="kurama" name="order_items" color="F4F3BE" x="1309" y="425" />
+		<entity schema="kurama" name="order_history" color="F4F3BE" x="1479" y="102" />
+		<entity schema="kurama" name="order_invoices" color="F4F3BE" x="1547" y="340" />
+		<entity schema="kurama" name="order_items" color="F4F3BE" x="1343" y="425" />
 		<entity schema="kurama" name="order_tickets" color="F4F3BE" x="1122" y="425" />
 		<entity schema="kurama" name="orders" color="F4F3BE" x="1190" y="85" />
 		<entity schema="kurama" name="payment_events" color="F4F3BE" x="1785" y="85" />
 		<entity schema="kurama" name="payment_methods" color="F4F3BE" x="1394" y="697" />
 		<entity schema="kurama" name="payment_transactions" color="F4F3BE" x="1819" y="374" />
-		<entity schema="kurama" name="product_items" color="BED3F4" x="544" y="816" />
+		<entity schema="kurama" name="product_items" color="BED3F4" x="527" y="850" />
 		<entity schema="kurama" name="products" color="BED3F4" x="289" y="833" />
 		<entity schema="kurama" name="trips" color="BED3F4" x="85" y="833" />
 		<entity schema="kurama" name="users" color="C1399D" x="51" y="102" />
@@ -713,24 +713,24 @@
 			<entity schema="kurama" name="trips" />
 			<entity schema="kurama" name="medias" />
 			<entity schema="kurama" name="vouchers" />
-			<entity schema="kurama" name="product_items" />
 			<entity schema="kurama" name="categories" />
 			<entity schema="kurama" name="products" />
+			<entity schema="kurama" name="product_items" />
 		</group>
 		<group name="Customer" color="00FF00" >
-			<entity schema="kurama" name="customer_addresses" />
 			<entity schema="kurama" name="customers" />
 			<entity schema="kurama" name="customer_reviews" />
+			<entity schema="kurama" name="customer_addresses" />
 		</group>
 		<group name="Checkout" color="FFFF00" >
-			<entity schema="kurama" name="order_history" />
 			<entity schema="kurama" name="payment_methods" />
-			<entity schema="kurama" name="order_items" />
-			<entity schema="kurama" name="order_invoices" />
-			<entity schema="kurama" name="order_tickets" />
 			<entity schema="kurama" name="payment_events" />
 			<entity schema="kurama" name="payment_transactions" />
 			<entity schema="kurama" name="orders" />
+			<entity schema="kurama" name="order_items" />
+			<entity schema="kurama" name="order_tickets" />
+			<entity schema="kurama" name="order_history" />
+			<entity schema="kurama" name="order_invoices" />
 		</group>
 		<group name="API Control &amp; Admin Area" color="800080" >
 			<entity schema="kurama" name="users" />
