@@ -15,6 +15,7 @@ import PaymentTransaction from "./PaymentTransaction.js";
 import PaymentMethod from "./PaymentMethod.js";
 import PaymentEvent from "./PaymentEvent.js";
 import OrderTicket from "./OrderTicket.js";
+import Cms from "./Cms.js";
 
 export default {
   User,
@@ -34,4 +35,5 @@ export default {
   PaymentTransaction,
   PaymentMethod,
   PaymentEvent,
+  Cms,
 };
